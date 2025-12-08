@@ -35,17 +35,13 @@ Clone both repositories into the **same parent folder**:
 - `booohking-laravel-backend`
 - `booohking-nextjs-frontend`
 
-Directory structure example:
-/your-folder
-    /booohking-laravel-backend
-    /booohking-nextjs-frontend
-
 
 ---
 
-## Running the Project (Docker)
 
-### Start the backend and frontend
+## Setup the Project (Docker)
+
+### Build the backend and frontend
 ```bash
 cd booohking-laravel-backend
 docker-compose up --build
@@ -53,9 +49,27 @@ docker-compose up --build
 
 This will start:
 - Laravel backend (port 8080)
-- Redis
-- SQLite database
+- Redis server
 - Next.js frontend (port 3000)
+
+### Setup Laravel environment
+
+Once the container is running, you need to setup Laravel environment, by entering the Docker compose backend:
+```bash
+docker-compose exec backend bash
+```
+
+And then run inside container:
+```bash
+cp .env.example .env
+php artisan jwt:secret
+touch database/database.sqlite
+chmod 777 database/database.sqlite
+composer install
+php artisan migrate --seed
+```
+
+After setup, all subsequent project starts is simply **docker-compose up**.
 
 ## Pre-seeded users you can sign in with:
 

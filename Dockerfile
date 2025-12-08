@@ -46,6 +46,9 @@ COPY --from=prepare /app .
 # Install dependencies (including next)
 RUN npm install
 
+# Build the Next.js project (this will generate the `.next` directory)
+RUN npm run build
+
 # Check if next is available (this will run 'next' to verify installation)
 RUN npm run next --version
 

@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+.authContainer {
+    @apply flex items-center justify-center min-h-screen bg-[#DEEDE4] dark:bg-gray-900;
+}
+
+.authCard {
+    @apply w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8;
+}
+
+.authTitle {
+    @apply text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center;
+}
+
+.authForm {
+    @apply flex flex-col gap-4;
+}
+
+.authLabel {
+    @apply text-gray-700 dark:text-gray-200 font-medium mb-2;
+}
+
+.authInput {
+    @apply px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.authButton {
+    @apply mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.authError {
+    @apply mb-4 text-red-600 dark:text-red-400 text-center;
+}
+
+.authSuccess {
+    @apply mb-4 text-green-600 dark:text-green-400 text-center;
+}
+
+.authLink {
+    @apply text-blue-600 dark:text-blue-400 hover:underline;
+}
+
+.authFooter {
+    @apply mt-4 text-center text-gray-700 dark:text-gray-300;
+}
+
+.authFieldError {
+    @apply text-red-600 dark:text-red-400 text-sm ml-2;
+}

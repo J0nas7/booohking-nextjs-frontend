@@ -1,0 +1,96 @@
+"use client"
+
+// External
+import { usePathname, useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
+
+// Internal
+import { useAuth } from "@/hooks"
+import { selectIsLoggedIn, useTypedSelector } from "@/redux"
+
+void React.createElement
+
+// Check if you are on the client (browser) or server
+const isBrowser = () => typeof window !== "undefined"
+
+export const OnlyPublicRoutes = ({ children }: { children: React.ReactNode }) => {
+    // Hooks
+    useAuth()
+    const router = useRouter()
+    const pathname = usePathname() // Get the current pathname
+
+    // Redux
+    const isLoggedIn = useTypedSelector(selectIsLoggedIn)
+
+    // Variables
+    const [render, setRender] = useState<boolean>(false)
+
+    // Routes that are allowed for guests
+    const publicRoutes = [
+        "/sign-in",
+        "/register-account",
+        "/activate-account",
+        "/forgot-password",
+        "/forgot-password/reset"
+    ]
+
+    /**
+     * @var pathIsProtected checks if path exists in the the publicRoutes routes array
+     */
+    const pathIsProtected = publicRoutes.indexOf(pathname) === -1
+
+    useEffect(() => {
+        if (isBrowser() && isLoggedIn === false && pathIsProtected) {
+            router.push(`/sign-in?ref=${encodeURIComponent(pathname)}`)
+        } else {
+            setRender(true);
+        }
+    }, [isLoggedIn, pathname, pathIsProtected]);
+
+    if (!render) return null
+
+    if (isLoggedIn === false && pathIsProtected) {
+        return null
+    }
+
+    return <>{children}</>
+}
+
+export const OnlyPrivateRoutes = ({ children }: { children: React.ReactNode }) => {
+    // Hooks
+    useAuth()
+    const router = useRouter()
+    const pathname = usePathname() // Get the current pathname
+
+    // Redux
+    const isLoggedIn = useTypedSelector(selectIsLoggedIn)
+
+    // Variables
+    const [render, setRender] = useState<boolean>(false)
+
+    // Routes that are allowed for guests
+    const publicRoutes = [
+        "/sign-in",
+        "/register-account",
+        "/activate-account",
+        "/forgot-password",
+        "/forgot-password/reset"
+    ]
+
+    /**
+     * @var pathIsProtected checks if path exists in the the publicRoutes routes array
+     */
+    const pathIsNotProtected = publicRoutes.indexOf(pathname) === -1
+
+    useEffect(() => {
+        setRender(true)
+    }, [])
+
+    if (!render) return null
+
+    if (isLoggedIn === true && !pathIsNotProtected) {
+        return null
+    }
+
+    return <>{children}</>
+}

@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.card {
+    @apply border border-gray-200 rounded-xl shadow-sm p-4;
+}
+
+.header {
+    @apply mb-2;
+}
+
+.title {
+    @apply text-lg font-bold;
+}
+
+.description {
+    @apply text-sm text-gray-500;
+}
+
+.content {
+    @apply mt-2;
+}

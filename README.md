@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Booohking – Booking System
+Full-stack booking application built with **Laravel 12** (backend API) and **Next.js 16** (frontend).
 
-## Getting Started
+---
 
-First, run the development server:
+## Tech Stack
 
+### Backend (Laravel 12)
+- JWT token authentication (`tymon/jwt-auth`)
+- Redis caching (services, providers, working hours)
+  *Bookings are not cached since they change frequently*
+- SQLite (chosen for simplicity in Docker & testing)
+  *Since it is self-hosted inside the Laravel project*
+- Laravel validation rules
+- Service classes for business logic
+- Database migrations, seeders and factories
+- Role middleware for checking user role.
+- Feature tests + unit tests with PHPUnit (101 tests).
+
+### Frontend (Next.js 16 + TypeScript)
+- App Router
+- TailwindCSS + SCSS Modules for styling
+- Axios for API calls
+- Redux Toolkit for authentication state
+- React Context for domain data (bookings, providers, services etc.)
+- TanStack Query for data fetching and caching
+- Unit tests with Jest (99 tests).
+
+---
+
+## Repositories
+
+Clone both repositories into the **same parent folder**:
+
+- `booohking-laravel-backend`
+- `booohking-nextjs-frontend`
+
+Directory structure example:
+/your-folder
+    /booohking-laravel-backend
+    /booohking-nextjs-frontend
+
+
+---
+
+## Running the Project (Docker)
+
+### Start the backend and frontend
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd booohking-laravel-backend
+docker-compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start:
+- Laravel backend (port 8080)
+- Redis
+- SQLite database
+- Next.js frontend (port 3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pre-seeded users you can sign in with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# ADMIN
 
-## Learn More
+E-mail:
+jonas-adm@booohking.com
+Password:
+abc123def
 
-To learn more about Next.js, take a look at the following resources:
+# USER
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+E-mail:
+jonas-usr@booohking.com
+Password:
+abc123def
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+Backend – PHPUnit
+```bash
+docker compose exec backend php artisan test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Frontend – Jest
+```bash
+docker compose exec frontend npx jest
+```

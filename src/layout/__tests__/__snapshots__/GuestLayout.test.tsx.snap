@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`GuestLayout Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="guest-wrapper"
+    data-testid="guest-wrapper"
+  >
+    <div
+      class="jumbotron-wrapper"
+      data-testid="jumbotron-wrapper"
+    >
+      <div
+        class="ghost-logo"
+        data-icon="[object Object]"
+        data-size="10x"
+        data-testid="ghost-logo"
+      />
+      <span>
+        Booohking
+      </span>
+    </div>
+    <div
+      class="guest-contents"
+      data-testid="guest-contents"
+    />
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,190 @@
+@reference "tailwindcss";
+
+.container {
+    @apply px-4 py-4;
+
+    h2 {
+        @apply text-2xl font-bold mb-3 dark:text-gray-100;
+    }
+
+    .sectionTitle {
+        @apply text-xl font-semibold mb-3 mt-6 dark:text-gray-100;
+    }
+
+    .emptyText {
+        @apply text-gray-500 mb-4 dark:text-gray-400;
+    }
+
+    /* --- GRID CONTAINER (same as your global style) --- */
+    .gridContainer {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 10px;
+
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* --- CARD WRAPPER --- */
+    .bookingCard {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        padding: 1rem;
+        border-radius: 0.75rem;
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+        }
+    }
+
+    .serviceName {
+        @apply text-lg;
+    }
+
+    .providerName {
+        @apply text-gray-500;
+    }
+
+    .bookingMeta {
+        @apply font-medium;
+    }
+
+    .statusChip {
+        @apply mt-4 w-full flex items-center justify-between;
+    }
+
+    /* --- CARD INTERNAL STRUCTURE --- */
+    .cardInnerTitle {
+        @apply flex items-center gap-2 dark:text-gray-100;
+    }
+
+    .cardTitle {
+        @apply text-lg font-bold dark:text-gray-100;
+    }
+
+    .cardDescription {
+        @apply text-sm text-gray-600 dark:text-gray-400;
+    }
+
+    .cardContent {
+        @apply mt-2 text-sm text-gray-700 dark:text-gray-300;
+    }
+
+    /* --- BOOKING HEADER SECTION --- */
+    .bookHeader {
+        @apply flex justify-between gap-4 flex-col sm:flex-row mb-3;
+    }
+
+    /* --- DATE GROUP HEADER (like available slots) --- */
+    .dateContainer {
+        @apply mb-6;
+
+        .dateHeader {
+            @apply text-xl font-semibold text-yellow-400 mt-2 dark:text-yellow-300;
+        }
+
+        .dateTimestamp {
+            @apply inline-block text-xs mb-4 text-gray-500 dark:text-gray-400;
+        }
+    }
+
+    /* --- CHIP STATUS BADGES --- */
+    .chip {
+        @apply text-xs px-2 py-1 rounded-full font-semibold;
+    }
+
+    .chipBooked {
+        @apply bg-blue-100 text-blue-700;
+        @apply dark:bg-blue-900/40 dark:text-blue-300;
+    }
+
+    .chipCancelled {
+        @apply bg-red-100 text-red-700;
+        @apply dark:bg-red-900/40 dark:text-red-300;
+    }
+
+    /* --- SECTIONS INSIDE CARD --- */
+    .sectionContainer {
+        @apply mb-4;
+    }
+
+    .list {
+        @apply text-sm text-gray-700 dark:text-gray-300 list-disc pl-5;
+    }
+
+    .noContent {
+        @apply text-sm text-gray-400 dark:text-gray-500;
+    }
+
+    .noProviders {
+        @apply text-gray-600 dark:text-gray-400;
+    }
+}
+
+.containerLoading {
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+
+        .sectionTitle,
+        .serviceName,
+        .providerName,
+        .bookingMeta {
+            background: linear-gradient(to right, #6e6e6e 20%, #8c8c8c 40%, #6e6e6e 60%);
+            /* Darker and more contrast */
+            background-size: 200% 100%;
+            animation: leftToRight 1s linear infinite;
+        }
+    }
+
+    .sectionTitle,
+    .serviceName,
+    .providerName,
+    .bookingMeta {
+
+        /* Light Mode */
+        @media (prefers-color-scheme: light) {
+            background: linear-gradient(to right, #c9c8c8 20%, #e8e8e8 40%, #c9c8c8 60%);
+            background-size: 200% 100%;
+            animation: leftToRight 1s linear infinite;
+        }
+
+        // Use a transparent-to-transparent gradient for the text
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+
+    /* Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        .chipBooked {
+            background: linear-gradient(to right, #4a4a4a 20%, #666666 40%, #4a4a4a 60%);
+            background-size: 200% 100%;
+            animation: leftToRight 1s linear infinite;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        .chipBooked {
+            background: linear-gradient(to right, #c9c8c8 20%, #e8e8e8 40%, #c9c8c8 60%);
+            background-size: 200% 100%;
+            animation: leftToRight 1s linear infinite;
+        }
+    }
+}
+
+@keyframes leftToRight {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}

@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 // Internal
 import { useProvidersContext, useServicesContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
-import { env, ProvidersStates, ServiceStates } from '@/types';
+import { API_RESOURCES, env, ProvidersStates, RESOURCE_META, ServiceStates } from '@/types';
 import { ServiceView, ServiceViewProps } from '@/views';
 import { useEffect } from 'react';
 
@@ -22,7 +22,7 @@ export const ServicePage = () => {
     // --- React Query Pagination ---
     // Providers pagination query by serviceId
     const { data: renderProviders, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
-        queryKey: [`providers`, serviceId],
+        queryKey: [API_RESOURCES.providers.base, serviceId],
         queryFn: async ({ pageParam = 1 }) => await indexProvidersById(parseInt(serviceId)),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1
@@ -30,7 +30,7 @@ export const ServicePage = () => {
 
     // Service query by serviceId
     const { data: renderService, isLoading: serviceLoading } = useQuery<ServiceStates>({
-        queryKey: [`service`, serviceId],
+        queryKey: [RESOURCE_META.services.singular, serviceId],
         queryFn: async () => await showService(parseInt(serviceId)),
         enabled: !!serviceId
     })

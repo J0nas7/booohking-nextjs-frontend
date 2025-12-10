@@ -1,14 +1,11 @@
 // External
-import type { Metadata } from "next"
+import { Metadata } from 'next'
 import React from "react"
-
-// Internal
-import { Providers } from '@/layout'
 
 export const metadata: Metadata = {
     title: {
         default: "Booohking",
-        template: "Booohking - %s", // Automatically adds "Booohking - " as a prefix
+        template: "%s - Booohking", // Automatically adds "* - Booohkings"
     },
     description: "Book services at your favorite providers",
 }
@@ -21,9 +18,7 @@ export default async function RootLayout({
     return (
         <html lang={"en-US"}>
             <body className={`font-sans`}>
-                <Providers>
-                    {children}
-                </Providers>
+                {children}
             </body>
         </html>
     )

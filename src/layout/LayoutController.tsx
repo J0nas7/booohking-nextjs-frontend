@@ -5,33 +5,38 @@ import React, { useEffect, useState } from "react"
 
 // Internal
 import { GuestLayout, OnlyPrivateRoutes, OnlyPublicRoutes, UserLayout } from "@/layout"
-import { selectIsLoggedIn, useTypedSelector } from "@/redux"
+import { useAppDispatch } from "@/redux"
 import { Container } from '@/ui'
 
 void React.createElement
 
-export const LayoutController = (
-    { children }: { children: React.ReactNode }
-) => {
-    // Redux
-    const isLoggedIn = useTypedSelector(selectIsLoggedIn)
+interface LayoutControllerProps {
+    children: React.ReactNode
+    isLoggedIn: boolean;
+}
 
-    // Internal variables
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+export const LayoutController: React.FC<LayoutControllerProps> = (props) => {
+    // ---- Hooks ----
+    const dispatch = useAppDispatch()
 
-    // Effects
+    // ---- State ----
+    const [isClientReady, setIsClientReady] = useState(false);
+
+    // ---- Effects ----
     useEffect(() => {
-        setIsLoading(false)
-    }, [])
+        setIsClientReady(true);
+        // dispatch(setIsLoggedIn(props.isLoggedIn))
+    }, [props.isLoggedIn, dispatch]);
 
-    if (isLoading) return null
+    // ---- Render ----
+    if (!isClientReady) return null;
 
-    if (isLoggedIn === true) {
+    if (props.isLoggedIn === true) {
         return (
             <Container data-testid="mock-container" className="booohking-wrapper">
                 <OnlyPrivateRoutes>
                     <UserLayout>
-                        {children}
+                        {props.children}
                     </UserLayout>
                 </OnlyPrivateRoutes>
             </Container>
@@ -42,7 +47,7 @@ export const LayoutController = (
         <Container data-testid="mock-container" className="booohking-wrapper">
             <OnlyPublicRoutes>
                 <GuestLayout>
-                    {children}
+                    {props.children}
                 </GuestLayout>
             </OnlyPublicRoutes>
         </Container>

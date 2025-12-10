@@ -7,7 +7,7 @@ import { format, isBefore, parseISO } from "date-fns";
 import { useBookingsContext } from '@/contexts';
 import { setSnackMessage, useAppDispatch } from '@/redux';
 import styles from "@/styles/modules/myBookings.module.scss";
-import { BookingDTO, UserDTO } from '@/types';
+import { API_RESOURCES, BookingDTO, UserDTO } from '@/types';
 import { Btn, Card, Container, LoadingButton, Txt } from "@/ui";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -49,9 +49,9 @@ export const MyBookings: React.FC<MyBookingsProps> = (props) => {
         onSuccess: async () => {
             let queryKey
             if (props.pov === "ADMIN") {
-                queryKey = [`adminBookings`]
+                queryKey = [`admin_${API_RESOURCES.bookings.base}`]
             } else {
-                queryKey = [`myBookings`, props.authUser?.User_ID]
+                queryKey = [`my_${API_RESOURCES.bookings.base}`, props.authUser?.User_ID]
             }
             queryClient.resetQueries({ queryKey: queryKey, exact: true })
             queryClient.removeQueries({ queryKey: queryKey })

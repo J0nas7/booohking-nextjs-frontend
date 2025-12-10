@@ -24,6 +24,7 @@ export const SignInPage: React.FC = () => {
 
     // ---- Effects ----
     useEffect(() => {
+        console.log("sign in", document.title)
         document.title = "Sign In - " + env.app_name;
     }, [])
 

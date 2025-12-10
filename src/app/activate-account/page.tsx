@@ -1,5 +1,10 @@
+import { ServerAuth } from '@/layout/ServerAuth'
 import { ActivateAccountPage } from '@/views'
 
-const Page = () => <ActivateAccountPage />
+const Page = () => (
+    <ServerAuth>
+        <ActivateAccountPage />
+    </ServerAuth>
+)
 
 export default Page

@@ -22,6 +22,8 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined)
 // UsersProvider using useResourceContext
 export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const resource = "users"
+    const idFieldName = "User_ID"
+    const parentResource = "users"
 
     const {
         indexItems: indexUsers,
@@ -32,8 +34,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         destroyItem: destroyUser
     } = useResourceContext<UserDTO, "User_ID">(
         resource,
-        "User_ID",
-        resource
+        idFieldName,
+        parentResource
     )
 
     return (

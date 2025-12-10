@@ -1,38 +1,41 @@
 "use client"
 
 // External
-import { useEffect } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 // Internal
 import { useServicesContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
-import { env, ServicesStates } from '@/types';
+import { API_RESOURCES, ServicesStates } from '@/types';
 import { ServicesOverviewView, ServicesOverviewViewProps } from '@/views';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 export const ServicesOverviewPage = () => {
     // ---- Hooks ----
     const { convertURLFormat } = useURLLink("")
     const { indexServicesById } = useServicesContext()
 
-    // ---- Effects ----
-    useEffect(() => {
-        document.title = "Welcome - " + env.app_name;
-    }, [])
+    // ---- State ----
+    const [flatServices, setFlatServices] = useState<ServicesStates>(undefined)
 
     // --- React Query Pagination ---
     const { data: renderServices, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
-        queryKey: [`services`, 1],
+        queryKey: [API_RESOURCES.services.base, 1],
         queryFn: async ({ pageParam = 1 }) => await indexServicesById(1),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1
     });
 
-    const flatServices: ServicesStates = renderServices
-        ? renderServices.pages.flatMap(page =>
-            Array.isArray(page.data) ? page.data : []
-        )
-        : undefined;
+    // ---- Effects ----
+    useEffect(() => {
+        setFlatServices(() => {
+            return renderServices
+                ? renderServices.pages.flatMap(page =>
+                    Array.isArray(page.data) ? page.data : []
+                )
+                : undefined;
+        })
+    }, [renderServices])
 
     // ---- Render ----
     const servicesOverviewViewProps: ServicesOverviewViewProps = {

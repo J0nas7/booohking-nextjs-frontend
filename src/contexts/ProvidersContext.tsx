@@ -25,6 +25,8 @@ const ProvidersContext = createContext<ProvidersContextType | undefined>(undefin
 // ProvidersProvider using useResourceContext
 export const ProvidersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const resource = "providers"
+    const idFieldName = "Provider_ID"
+    const parentResource = "services"
 
     const {
         indexItems: indexProviders,
@@ -35,8 +37,8 @@ export const ProvidersProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         destroyItem: destroyProvider
     } = useResourceContext<ProviderDTO, "Provider_ID">(
         resource,
-        "Provider_ID",
-        "services"
+        idFieldName,
+        parentResource
     )
 
     const { httpGetRequest } = useAxios()

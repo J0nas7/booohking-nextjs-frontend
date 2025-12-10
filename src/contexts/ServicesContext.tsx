@@ -22,6 +22,8 @@ const ServicesContext = createContext<ServicesContextType | undefined>(undefined
 // ServicesProvider using useResourceContext
 export const ServicesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const resource = "services"
+    const idFieldName = "Service_ID"
+    const parentResource = "users"
 
     const {
         indexItems: indexServices,
@@ -32,8 +34,8 @@ export const ServicesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         destroyItem: destroyService
     } = useResourceContext<ServiceDTO, "Service_ID">(
         resource,
-        "Service_ID",
-        "users"
+        idFieldName,
+        parentResource
     )
 
     return (

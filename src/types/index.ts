@@ -1,3 +1,4 @@
+export * from './API_Factory'
 export * from './Axios'
 export * from './BookingsDTO'
 export * from './CommonDTO'

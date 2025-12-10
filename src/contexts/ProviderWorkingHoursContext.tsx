@@ -26,6 +26,8 @@ export const ProviderWorkingHoursProvider: React.FC<{ children: React.ReactNode 
     children
 }) => {
     const resource = "provider-working-hours"
+    const idFieldName = "PWH_ID"
+    const parentResource = "provider-working-hours"
 
     const {
         indexItems: indexProvidersWH,
@@ -36,8 +38,8 @@ export const ProviderWorkingHoursProvider: React.FC<{ children: React.ReactNode 
         destroyItem: destroyProviderWH
     } = useResourceContext<ProviderWorkingHoursDTO, "PWH_ID">(
         resource,
-        "PWH_ID",
-        "provider-working-hours"
+        idFieldName,
+        parentResource
     )
 
     return (

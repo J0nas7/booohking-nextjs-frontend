@@ -1,5 +1,5 @@
 // Internal
-import { useResourceAPI } from "@/hooks"
+import { useResourceAPI } from "@/hooks/useResourceAPI"
 
 // Generic context and provider to handle different resources.
 export const useResourceContext = <T extends { [key: string]: any }, IDKey extends keyof T>(

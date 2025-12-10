@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useBookingsContext } from '@/contexts';
 import { useAuth } from '@/hooks';
 import { selectAuthUser, useTypedSelector } from '@/redux';
-import { BookingsStates, env } from '@/types';
+import { API_RESOURCES, BookingsStates, env } from '@/types';
 import { AdminBookingsView, AdminBookingsViewProps } from '@/views';
 import { useRouter } from 'next/navigation';
 
@@ -24,7 +24,7 @@ export const AdminBookingsPage = () => {
     // ---- React Query Pagination ----
     // My bookings by userId
     const { data: renderAdminBookings, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: adminBookingsLoading } = useInfiniteQuery({
-        queryKey: [`adminBookings`],
+        queryKey: [`admin_${API_RESOURCES.bookings.base}`],
         queryFn: async ({ pageParam = 1 }) =>
             await indexBookings(),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,

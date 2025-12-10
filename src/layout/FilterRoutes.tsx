@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 
 // Internal
-import { useAuth } from "@/hooks"
+import { useAuth } from '@/hooks'
 import { selectIsLoggedIn, useTypedSelector } from "@/redux"
 
 void React.createElement

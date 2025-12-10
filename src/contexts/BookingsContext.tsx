@@ -22,6 +22,8 @@ const BookingsContext = createContext<BookingsContextType | undefined>(undefined
 // BookingsProvider using useResourceContext
 export const BookingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const resource = "bookings"
+    const idFieldName = "Booking_ID"
+    const parentResource = "users"
 
     const {
         indexItems: indexBookings,
@@ -32,8 +34,8 @@ export const BookingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         destroyItem: destroyBooking
     } = useResourceContext<BookingDTO, "Booking_ID">(
         resource,
-        "Booking_ID",
-        "users"
+        idFieldName,
+        parentResource
     )
 
     return (

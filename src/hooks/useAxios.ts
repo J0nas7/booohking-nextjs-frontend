@@ -3,7 +3,7 @@ import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 
 // Internal
-import { useCookies } from '@/hooks'
+import { useCookies } from '@/hooks/useCookies'
 import type { axiosHeaders, postContent } from '@/types'
 import { env, paths } from '@/types'
 

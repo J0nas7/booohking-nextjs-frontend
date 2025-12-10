@@ -1,7 +1,7 @@
 "use client"
 
 // External
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DehydratedState, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 
 // Internal
@@ -14,20 +14,24 @@ import "@/styles/global/tailwind.scss";
 
 export type ProviderProps = {
     children: React.ReactNode;
+    isLoggedIn: boolean;
+    dehydratedState?: DehydratedState
     // i18n: i18n;
 };
 
-export const Providers: React.FC<ProviderProps> = ({ children }) => {
+export const Providers: React.FC<ProviderProps> = (props) => {
     const queryClient = new QueryClient();
 
     return (
         <Provider store={appStore(undefined)}>
             <QueryClientProvider client={queryClient}>
-                <ContextWrapper>
-                    <LayoutController>
-                        {children}
-                    </LayoutController>
-                </ContextWrapper>
+                <HydrationBoundary state={props.dehydratedState}>
+                    <ContextWrapper>
+                        <LayoutController isLoggedIn={props.isLoggedIn}>
+                            {props.children}
+                        </LayoutController>
+                    </ContextWrapper>
+                </HydrationBoundary>
             </QueryClientProvider>
         </Provider>
     )

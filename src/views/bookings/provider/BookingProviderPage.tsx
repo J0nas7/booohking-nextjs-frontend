@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 // Internal
 import { useProvidersContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
-import { env, ProviderDTO, ProviderStates } from '@/types';
+import { env, ProviderDTO, ProviderStates, RESOURCE_META } from '@/types';
 import { BookingProviderView, BookingProviderViewProps } from '@/views';
 
 export const BookingProviderPage = () => {
@@ -24,7 +24,7 @@ export const BookingProviderPage = () => {
     // ---- React Query Pagination ----
     // Provider query by providerId
     const { data: renderProvider, isLoading: providerLoading } = useQuery<ProviderStates>({
-        queryKey: [`provider`, providerId],
+        queryKey: [RESOURCE_META.providers.singular, providerId],
         queryFn: async () => await showProvider(parseInt(providerId)),
         enabled: !!providerId // only fetch if ID exists
     })

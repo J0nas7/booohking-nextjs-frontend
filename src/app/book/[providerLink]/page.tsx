@@ -18,7 +18,6 @@ export async function generateMetadata(
 
     const queryClient = await fetchPageQueryClient(providerId, queryKeyProvider)
     const renderProvider: ProviderStates = queryClient.getQueryData(queryKeyProvider)
-    console.log("provider page", renderProvider)
 
     if (renderProvider) {
         return { title: `${renderProvider.Provider_Name}` }
@@ -35,7 +34,6 @@ const Page = async ({ params }: PageProps) => {
     const { providerLink } = await params
     const providerId: number = parseInt(providerLink?.split('-')[0])
     const queryKeyProvider = [RESOURCE_META.providers.singular, providerId]
-    console.log("providerData", queryKeyProvider)
 
     const queryClient = await fetchPageQueryClient(providerId, queryKeyProvider)
     const dehydratedState = dehydrate(queryClient)
@@ -65,7 +63,6 @@ async function fetchPageQueryClient(providerId: number, queryKeyProvider: (numbe
     if (provider && provider.Service_ID) {
         const serviceId = provider.Service_ID;
         const infiniteKey = ['availableSlots', providerId];
-        console.log("availableSlots", infiniteKey)
 
         await queryClient.prefetchInfiniteQuery({
             queryKey: infiniteKey,
@@ -78,7 +75,6 @@ async function fetchPageQueryClient(providerId: number, queryKeyProvider: (numbe
 
                 const data = await serverGet(`bookings/${providerId}/available-slots${query}`);
 
-                console.log("server availableSlots data", data)
                 return data
             },
             getNextPageParam: (lastPage: any) => {

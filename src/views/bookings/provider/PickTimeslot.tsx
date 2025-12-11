@@ -87,36 +87,46 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
 
                         {/* Slots grid */}
                         <Container className={styles.gridContainer}>
-                            {slots.map((slot, index) => (
-                                <Container
-                                    key={index}
-                                    onClick={() => authUser && pickTimeslot(slot)}
-                                    onKeyDown={(e) => {
-                                        if (authUser && (e.key === "Enter" || e.key === " ")) {
-                                            e.preventDefault(); // prevent scrolling for space
-                                            pickTimeslot(slot);
-                                        }
-                                    }}
-                                    role="button"
-                                    tabIndex={authUser ? 0 : -1}
-                                    className={clsx(
-                                        authUser && "cursor-pointer"
-                                    )}
-                                >
-                                    <Card.Card className={styles.cardShadow}>
-                                        <Card.CardHeader>
-                                            <Card.CardTitle>
-                                                <Txt className={styles.cardInnerTitle}>
-                                                    <Txt>{slot.start} → {slot.end}</Txt>
-                                                    {createBookingPending && pickedSlot === slot && (
-                                                        <FontAwesomeIcon data-testid="booking-slot-spinner" icon={faSpinner} spin={true} />
-                                                    )}
-                                                </Txt>
-                                            </Card.CardTitle>
-                                        </Card.CardHeader>
-                                    </Card.Card>
-                                </Container>
-                            ))}
+                            {slots.map((slot, index) => {
+                                const now = new Date()
+                                const dateStamp = new Date(`${slot.date} ${slot.start}`)
+                                const active = now.getTime() < dateStamp.getTime()
+
+                                return (
+                                    <Container
+                                        key={index}
+                                        onClick={() => (active && authUser) && pickTimeslot(slot)}
+                                        onKeyDown={(e) => {
+                                            if (active && authUser && (e.key === "Enter" || e.key === " ")) {
+                                                e.preventDefault(); // prevent scrolling for space
+                                                pickTimeslot(slot);
+                                            }
+                                        }}
+                                        role="button"
+                                        tabIndex={(active && authUser) ? 0 : -1}
+                                        className={clsx(
+                                            authUser && "cursor-pointer"
+                                        )}
+                                    >
+                                        <Card.Card className={styles.cardShadow}>
+                                            <Card.CardHeader>
+                                                <Card.CardTitle>
+                                                    <Txt className={styles.cardInnerTitle}>
+                                                        <Txt className={clsx(
+                                                            !active && styles.cardInactive
+                                                        )}>
+                                                            {slot.start} → {slot.end}
+                                                        </Txt>
+                                                        {createBookingPending && pickedSlot === slot && (
+                                                            <FontAwesomeIcon data-testid="booking-slot-spinner" icon={faSpinner} spin={true} />
+                                                        )}
+                                                    </Txt>
+                                                </Card.CardTitle>
+                                            </Card.CardHeader>
+                                        </Card.Card>
+                                    </Container>
+                                )
+                            })}
                         </Container>
                     </Container>
                 )

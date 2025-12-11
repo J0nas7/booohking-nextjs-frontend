@@ -28,6 +28,10 @@
 
 .cardInnerTitle {
     @apply flex items-center gap-2;
+
+    .cardInactive {
+        @apply line-through text-gray-300;
+    }
 }
 
 .bookHeader {

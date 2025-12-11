@@ -7,9 +7,9 @@ import { useParams } from 'next/navigation';
 // Internal
 import { useProvidersContext, useServicesContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
-import { API_RESOURCES, env, ProvidersStates, RESOURCE_META, ServiceStates } from '@/types';
+import { API_RESOURCES, ProvidersStates, RESOURCE_META, ServiceStates } from '@/types';
 import { ServiceView, ServiceViewProps } from '@/views';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const ServicePage = () => {
     // ---- Hooks ----
@@ -19,36 +19,40 @@ export const ServicePage = () => {
     const { showService } = useServicesContext()
     const { indexProvidersById } = useProvidersContext()
 
-    // --- React Query Pagination ---
+    // ---- State ----
+    const [flatProviders, setFlatProviders] = useState<ProvidersStates>(undefined)
+    const [renderService, setRenderService] = useState<ServiceStates>(undefined)
+
+    // ---- React Query Pagination ----
     // Providers pagination query by serviceId
-    const { data: renderProviders, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
-        queryKey: [API_RESOURCES.providers.base, serviceId],
+    const { data: dataProviders, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
+        queryKey: [API_RESOURCES.providers.base, parseInt(serviceId)],
         queryFn: async ({ pageParam = 1 }) => await indexProvidersById(parseInt(serviceId)),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1
     });
 
     // Service query by serviceId
-    const { data: renderService, isLoading: serviceLoading } = useQuery<ServiceStates>({
-        queryKey: [RESOURCE_META.services.singular, serviceId],
+    const { data: dataService, isLoading: serviceLoading } = useQuery<ServiceStates>({
+        queryKey: [RESOURCE_META.services.singular, parseInt(serviceId)],
         queryFn: async () => await showService(parseInt(serviceId)),
         enabled: !!serviceId
     })
 
-    const flatProviders: ProvidersStates = renderProviders
-        ? renderProviders.pages.flatMap(page =>
-            Array.isArray(page.data) ? page.data : []
-        )
-        : undefined;
-
     // ---- Effects ----
     useEffect(() => {
-        if (renderService) {
-            document.title = renderService.Service_Name + " - " + env.app_name;
-        } else if (renderService === false) {
-            document.title = "Service not found - " + env.app_name;
-        }
-    }, [renderService])
+        setRenderService(dataService)
+    }, [dataService])
+
+    useEffect(() => {
+        setFlatProviders(() => {
+            return dataProviders
+                ? dataProviders.pages.flatMap(page =>
+                    Array.isArray(page.data) ? page.data : []
+                )
+                : undefined;
+        })
+    }, [dataProviders])
 
     // ---- Render ----
     const serviceViewProps: ServiceViewProps = {

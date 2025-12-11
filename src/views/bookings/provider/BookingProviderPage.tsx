@@ -56,8 +56,6 @@ export const BookingProviderPage = () => {
 
     // ---- Effects ----
     useEffect(() => {
-        console.log("availableSlots", infiniteKey, renderAvailableSlots)
-        setRenderProvider(providerData)
         setFlatAvailableSlots(() => {
             return renderAvailableSlots
                 ? renderAvailableSlots.pages.flatMap(page =>
@@ -65,7 +63,11 @@ export const BookingProviderPage = () => {
                 )
                 : undefined;
         })
-    }, [providerData, renderAvailableSlots])
+    }, [renderAvailableSlots])
+
+    useEffect(() => {
+        setRenderProvider(providerData)
+    }, [providerData])
 
     // Handle infinity scroll
     useEffect(() => {

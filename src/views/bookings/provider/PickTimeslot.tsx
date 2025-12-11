@@ -6,6 +6,7 @@ import { selectAuthUser, setSnackMessage, useAppDispatch, useTypedSelector } fro
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -13,7 +14,6 @@ import React, { useState } from 'react';
 import styles from "@/styles/modules/overview.module.scss";
 import { BookingDTO, ProviderStates } from '@/types';
 import { Card, Container, H3, Txt } from "@/ui";
-import clsx from 'clsx';
 
 void React.createElement
 
@@ -82,16 +82,14 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
                             {new Date(date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}
                         </H3>
                         {workingHours && (
-                            <Txt className={styles.dateTimestamp}>
-                                {workingHours.PWH_StartTime.substring(0, 5)}-{workingHours.PWH_EndTime.substring(0, 5)}{" "}
-                                <Txt>({props.provider && props.provider.Provider_Timezone})</Txt>
-                            </Txt>
+                            <Txt className={styles.dateTimestamp}>{workingHours.PWH_StartTime.substring(0, 5)}-{workingHours.PWH_EndTime.substring(0, 5)}</Txt>
                         )}
 
                         {/* Slots grid */}
                         <Container className={styles.gridContainer}>
                             {slots.map((slot, index) => {
-                                const now = new Date()
+                                const timezone = props.provider ? props.provider.Provider_Timezone : "UTC";
+                                const now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
                                 const dateStamp = new Date(`${slot.date} ${slot.start}`)
                                 const active = now.getTime() < dateStamp.getTime()
 

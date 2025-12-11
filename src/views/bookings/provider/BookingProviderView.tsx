@@ -46,6 +46,19 @@ export const BookingProviderView: React.FC<BookingProviderViewProps> = (props) =
                     <Container className={styles.bookHeader}>
                         <Container>
                             <Txt className="text-lg">{props.renderProvider.service?.Service_Name}</Txt>
+                            <Txt className="text-sm">
+                                {" "}(
+                                {props.renderProvider.Provider_Timezone} Timezone{" "}
+                                {props.renderProvider.Provider_Timezone
+                                    ? new Intl.DateTimeFormat("en-GB", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: false,
+                                        timeZone: props.renderProvider.Provider_Timezone,
+                                    }).format(new Date())
+                                    : ""}
+                                )
+                            </Txt>
                         </Container>
                         {props.renderProvider.service && (
                             <Link href={`/service/${props.convertURLFormat(props.renderProvider.Service_ID ?? 0, props.renderProvider.service?.Service_Name ?? "")}`}>

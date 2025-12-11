@@ -7,7 +7,7 @@ interface PrefetchOptions {
     queryKey: any[];
     endpoint: string;
     actionType?: ActionType;
-    initialPageParam?: number;
+    initialPageParam?: number | false;
 }
 
 async function fetcher(endpoint: string, actionType: ActionType = 'get') {
@@ -32,16 +32,25 @@ async function fetcher(endpoint: string, actionType: ActionType = 'get') {
 export async function customPrefetchData({ queryKey, endpoint, actionType = 'get', initialPageParam = 1 }: PrefetchOptions) {
     const queryClient = new QueryClient();
 
-    await queryClient.prefetchInfiniteQuery({
-        queryKey,
-        queryFn: async ({ pageParam = initialPageParam }) => {
-            const response = await fetcher(endpoint, actionType);
-
-            return response
-        },
-        getNextPageParam: (lastPage: any) => lastPage?.nextPage ?? null,
-        initialPageParam,
-    });
+    if (!initialPageParam) {
+        await queryClient.prefetchQuery({
+            queryKey,
+            queryFn: async () => {
+                const response = await fetcher(endpoint, actionType)
+                return response
+            }
+        })
+    } else {
+        await queryClient.prefetchInfiniteQuery({
+            queryKey,
+            queryFn: async ({ pageParam = initialPageParam }) => {
+                const response = await fetcher(endpoint, actionType);
+                return response
+            },
+            getNextPageParam: (lastPage: any) => lastPage?.nextPage ?? null,
+            initialPageParam,
+        });
+    }
 
     return queryClient;
 }

@@ -1,9 +1,10 @@
 // Internal
 import { useResourceAPI } from "@/hooks/useResourceAPI"
+import { ResourceName } from '@/types'
 
 // Generic context and provider to handle different resources.
 export const useResourceContext = <T extends { [key: string]: any }, IDKey extends keyof T>(
-    resource: string,
+    resource: ResourceName,
     idFieldName: IDKey,
     parentResource: string
 ) => {

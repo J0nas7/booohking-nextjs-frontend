@@ -4,7 +4,7 @@ import { dehydrate, InfiniteData } from '@tanstack/react-query'
 // Internal
 import { customPrefetchData } from '@/app/lib/prefetchData'
 import { ServerAuth } from '@/layout/ServerAuth'
-import { API_RESOURCES } from '@/types'
+import { API_RESOURCES, env } from '@/types'
 import { ServicesOverviewPage } from '@/views'
 import { Metadata, ResolvingMetadata } from 'next'
 
@@ -18,7 +18,7 @@ export async function generateMetadata(
 
     const total = pageData?.pages?.[0]?.pagination?.total ?? 0
 
-    return { title: `Services: Choose between ${total} - Booohking` }
+    return { title: `Services: Choose between ${total} - ${env.app_name}` }
 }
 
 const Page = async () => {

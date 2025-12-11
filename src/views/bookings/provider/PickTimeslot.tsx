@@ -72,7 +72,7 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
 
     return (
         <>
-            {authUser && Object.entries(slotsByDate).map(([date, slots]) => {
+            {Object.entries(slotsByDate).map(([date, slots]) => {
                 const getDay = new Date(date).getDay()
                 const workingHours = props.provider && props.provider.working_hours?.find((wh) => wh.PWH_DayOfWeek === getDay)
                 return (
@@ -90,8 +90,18 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
                             {slots.map((slot, index) => (
                                 <Container
                                     key={index}
-                                    onClick={() => pickTimeslot(slot)}
-                                    className="cursor-pointer"
+                                    onClick={() => authUser && pickTimeslot(slot)}
+                                    onKeyDown={(e) => {
+                                        if (authUser && (e.key === "Enter" || e.key === " ")) {
+                                            e.preventDefault(); // prevent scrolling for space
+                                            pickTimeslot(slot);
+                                        }
+                                    }}
+                                    role="button"
+                                    tabIndex={authUser ? 0 : -1}
+                                    className={clsx(
+                                        authUser && "cursor-pointer"
+                                    )}
                                 >
                                     <Card.Card className={styles.cardShadow}>
                                         <Card.CardHeader>

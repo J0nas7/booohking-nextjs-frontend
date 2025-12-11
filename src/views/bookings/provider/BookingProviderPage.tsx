@@ -3,12 +3,12 @@
 // External
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Internal
 import { useProvidersContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
-import { env, ProviderDTO, ProviderStates, RESOURCE_META } from '@/types';
+import { ProviderStates, RESOURCE_META } from '@/types';
 import { BookingProviderView, BookingProviderViewProps } from '@/views';
 
 export const BookingProviderPage = () => {
@@ -20,26 +20,26 @@ export const BookingProviderPage = () => {
 
     // ---- State ----
     const containerRef = useRef<HTMLDivElement>(null);
+    const [renderProvider, setRenderProvider] = useState<ProviderStates>(undefined)
+    const [flatAvailableSlots, setFlatAvailableSlots] = useState<any[] | undefined>(undefined)
 
     // ---- React Query Pagination ----
     // Provider query by providerId
-    const { data: renderProvider, isLoading: providerLoading } = useQuery<ProviderStates>({
-        queryKey: [RESOURCE_META.providers.singular, providerId],
+    const { data: providerData, isLoading: providerLoading } = useQuery<ProviderStates>({
+        queryKey: [RESOURCE_META.providers.singular, parseInt(providerId)],
         queryFn: async () => await showProvider(parseInt(providerId)),
         enabled: !!providerId // only fetch if ID exists
     })
 
     // Available slots query by providerId and serviceId
+    const infiniteKey = [`availableSlots`, parseInt(providerId)]
     const { data: renderAvailableSlots, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: availableSlotsLoading } = useInfiniteQuery({
-        queryKey: [`availableSlots`, providerId],
-        queryFn: async ({ pageParam = 1 }) => {
-            if (!renderProvider) return [];
-            return await readAvailableSlots(
-                parseInt(providerId),
-                renderProvider.Service_ID,
-                pageParam
-            );
-        },
+        queryKey: infiniteKey,
+        queryFn: async ({ pageParam = 1 }) => await readAvailableSlots(
+            parseInt(providerId),
+            providerData && providerData.Service_ID || 0,
+            pageParam
+        ),
         getNextPageParam: (lastPage) => {
             if (!lastPage?.pagination) return undefined;
             return lastPage.pagination.currentPage < lastPage.pagination.lastPage
@@ -47,41 +47,45 @@ export const BookingProviderPage = () => {
                 : undefined;
         },
         initialPageParam: 1,
-        enabled: !!(renderProvider && (renderProvider as ProviderDTO).Service_ID), // only runs AFTER provider finishes
+        // only runs AFTER provider finishes
         // DISABLE CACHE COMPLETELY
         staleTime: 0,      // always stale → always refetch
         gcTime: 0,         // delete from cache immediately when unused
-        refetchOnMount: true
+        // refetchOnMount: true
     })
-
-    const flatAvailableSlots = renderAvailableSlots
-        ? renderAvailableSlots.pages.flatMap(page =>
-            Array.isArray(page.data) ? page.data : []
-        )
-        : undefined;
 
     // ---- Effects ----
     useEffect(() => {
-        if (renderProvider) {
-            document.title = renderProvider.Provider_Name + " - " + env.app_name;
-        } else if (renderProvider === false) {
-            document.title = "Provider not found - " + env.app_name;
-        }
-    }, [renderProvider])
+        console.log("availableSlots", infiniteKey, renderAvailableSlots)
+        setRenderProvider(providerData)
+        setFlatAvailableSlots(() => {
+            return renderAvailableSlots
+                ? renderAvailableSlots.pages.flatMap(page =>
+                    Array.isArray(page.data) ? page.data : []
+                )
+                : undefined;
+        })
+    }, [providerData, renderAvailableSlots])
 
     // Handle infinity scroll
     useEffect(() => {
+        console.log("scroll init")
         const container = containerRef.current;
         if (!container) return;
+        console.log("scroll", container)
 
         const handleScroll = () => {
             const { scrollTop, scrollHeight, clientHeight } = container;
             const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100; // 100px buffer
 
-            if (isNearBottom && hasNextPage && !isFetchingNextPage) { fetchNextPage(); }
+            if (isNearBottom && hasNextPage && !isFetchingNextPage) {
+                console.log("scroll availableSlots fetchingNext")
+                fetchNextPage();
+            }
         };
 
         const tryFetchMore = () => {
+            console.log("scroll tryFetchMore", (hasNextPage && !isFetchingNextPage && container.scrollHeight <= container.clientHeight))
             if (hasNextPage && !isFetchingNextPage && container.scrollHeight <= container.clientHeight) {
                 fetchNextPage();
             }
@@ -90,7 +94,7 @@ export const BookingProviderPage = () => {
         tryFetchMore();
         container.addEventListener("scroll", handleScroll);
         return () => container.removeEventListener("scroll", handleScroll);
-    }, [hasNextPage, isFetchingNextPage, fetchNextPage, containerRef.current]);
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage, containerRef.current, flatAvailableSlots]);
 
     // ---- Render ----
     const bookingProviderViewProps: BookingProviderViewProps = {

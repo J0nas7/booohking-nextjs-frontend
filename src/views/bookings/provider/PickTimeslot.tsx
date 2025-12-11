@@ -82,7 +82,10 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
                             {new Date(date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}
                         </H3>
                         {workingHours && (
-                            <Txt className={styles.dateTimestamp}>{workingHours.PWH_StartTime.substring(0, 5)}-{workingHours.PWH_EndTime.substring(0, 5)}</Txt>
+                            <Txt className={styles.dateTimestamp}>
+                                {workingHours.PWH_StartTime.substring(0, 5)}-{workingHours.PWH_EndTime.substring(0, 5)}{" "}
+                                <Txt>({props.provider && props.provider.Provider_Timezone})</Txt>
+                            </Txt>
                         )}
 
                         {/* Slots grid */}

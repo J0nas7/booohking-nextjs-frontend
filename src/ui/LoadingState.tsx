@@ -20,7 +20,7 @@ type LoadingStateProps = {
 
 export const LoadingState: React.FC<LoadingStateProps> = (props) => (
     <>
-        {props.isLoading && props.renderItem === undefined ? (
+        {props.isLoading ? (
             <>
                 {props.tableTSX ? (
                     <>{props.tableTSX}</>

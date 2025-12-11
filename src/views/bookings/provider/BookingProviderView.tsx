@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 // Internal
 import styles from "@/styles/modules/overview.module.scss";
-import { ProviderStates } from '@/types';
+import { ProviderStates, UserDTO } from '@/types';
 import { Container, H1, LoadingButton, LoadingState, Txt } from '@/ui';
 import { PickTimeslot, PickTimeslotLoading } from '@/views';
 import React, { RefObject } from 'react';
@@ -15,6 +15,7 @@ export interface BookingProviderViewProps {
     providerLoading: boolean
     availableSlotsLoading: boolean
     flatAvailableSlots: any[] | undefined
+    authUser: UserDTO | undefined
     convertURLFormat: (id: number, name: string) => string
     containerRef: RefObject<HTMLDivElement | null>
     hasNextPage: boolean
@@ -27,7 +28,7 @@ export const BookingProviderView: React.FC<BookingProviderViewProps> = (props) =
             <H1>{props.renderProvider ? props.renderProvider.Provider_Name : "Provider"}</H1>
             <LoadingState
                 singular=""
-                isLoading={props.providerLoading || props.availableSlotsLoading}
+                isLoading={(!props.authUser || (props.providerLoading || props.availableSlotsLoading))}
                 renderItem={props.flatAvailableSlots}
                 permitted={true}
             />

@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 // Internal
 import { useProvidersContext } from '@/contexts';
 import { useURLLink } from '@/hooks';
+import { selectAuthUser, useTypedSelector } from '@/redux';
 import { ProviderStates, RESOURCE_META } from '@/types';
 import { BookingProviderView, BookingProviderViewProps } from '@/views';
 
@@ -20,6 +21,7 @@ export const BookingProviderPage = () => {
 
     // ---- State ----
     const containerRef = useRef<HTMLDivElement>(null);
+    const authUser = useTypedSelector(selectAuthUser)
     const [renderProvider, setRenderProvider] = useState<ProviderStates>(undefined)
     const [flatAvailableSlots, setFlatAvailableSlots] = useState<any[] | undefined>(undefined)
 
@@ -51,7 +53,7 @@ export const BookingProviderPage = () => {
         // DISABLE CACHE COMPLETELY
         staleTime: 0,      // always stale → always refetch
         gcTime: 0,         // delete from cache immediately when unused
-        // refetchOnMount: true
+        refetchOnMount: true
     })
 
     // ---- Effects ----
@@ -104,6 +106,7 @@ export const BookingProviderPage = () => {
         providerLoading,
         availableSlotsLoading,
         flatAvailableSlots,
+        authUser,
         convertURLFormat,
         containerRef,
         hasNextPage,

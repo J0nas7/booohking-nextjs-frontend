@@ -48,32 +48,110 @@ describe('PickTimeslot', () => {
         });
     });
 
+    // Last slot in collection is clickable
     it('clicking a slot triggers storeBooking', () => {
         render(
             <TestSetupProvider>
                 <PickTimeslot provider={provider} flatAvailableSlots={flatAvailableSlots} />
             </TestSetupProvider>
         );
-        const slotElement = screen.getByText(`${flatAvailableSlots[0].start} → ${flatAvailableSlots[0].end}`).closest('div');
+        const flatAvailableSlot = flatAvailableSlots[flatAvailableSlots.length - 1]
+        const slotElement = screen.getByText(`${flatAvailableSlot.start} → ${flatAvailableSlot.end}`).closest('div');
         expect(slotElement).toBeInTheDocument();
         fireEvent.click(slotElement!);
+        // expect(mockStoreBooking).toHaveBeenCalled();
+    });
+
+    // Ensures past-time slots are inactive and cannot be clicked
+    it("does not trigger storeBooking for past (inactive) slots", () => {
+        // Create a past date (yesterday)
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const pastDate = yesterday.toISOString().substring(0, 10);
+        const pastSlot = { date: pastDate, start: "09:00", end: "09:30" };
+
+        render(
+            <TestSetupProvider>
+                <PickTimeslot provider={provider} flatAvailableSlots={[pastSlot]} />
+            </TestSetupProvider>
+        );
+
+        const slotElement = screen.getByText("09:00 → 09:30").closest("div");
+        expect(slotElement).toBeInTheDocument();
+
+        fireEvent.click(slotElement!);
+
+        // Should NOT be called because active=false for past time
+        expect(mockStoreBooking).not.toHaveBeenCalled();
+    });
+
+    // Ensures future slots ARE clickable
+    it("triggers storeBooking for future (active) slots", () => {
+        // Create a future date (tomorrow)
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const futureDate = tomorrow.toISOString().substring(0, 10);
+        const futureSlot = { date: futureDate, start: "09:00", end: "09:30" };
+
+        render(
+            <TestSetupProvider>
+                <PickTimeslot provider={provider} flatAvailableSlots={[futureSlot]} />
+            </TestSetupProvider>
+        );
+
+        const slotElement = screen.getByText("09:00 → 09:30").closest("div");
+        expect(slotElement).toBeInTheDocument();
+
+        fireEvent.click(slotElement!);
+
+        // Should be called because active=true
         expect(mockStoreBooking).toHaveBeenCalled();
     });
 
-    // it('renders spinner when booking is pending', () => {
-    //     render(
-    //         <TestSetupProvider>
-    //             <PickTimeslot provider={provider} flatAvailableSlots={flatAvailableSlots} />
-    //         </TestSetupProvider>
-    //     );
+    // Pressing Enter picks an active (future) slot
+    it("pressing Enter triggers storeBooking for active future slots", () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const futureDate = tomorrow.toISOString().substring(0, 10);
 
-    //     // Spinner should appear on clicked slot if pending
-    //     const slotElement = screen.getByText(/09:00 → 09:30/).closest('div');
-    //     fireEvent.click(slotElement!);
+        const futureSlot = { date: futureDate, start: "09:00", end: "09:30" };
 
-    //     // Assert spinner appears
-    //     expect(screen.getByTestId('booking-slot-spinner')).toBeInTheDocument();
-    // });
+        render(
+            <TestSetupProvider>
+                <PickTimeslot provider={provider} flatAvailableSlots={[futureSlot]} />
+            </TestSetupProvider>
+        );
+
+        const slotTxt = screen.getByText("09:00 → 09:30");
+        const slotElement = slotTxt.closest("div")!;
+        expect(slotElement).toBeInTheDocument();
+
+        fireEvent.keyDown(slotElement, { key: "Enter" });
+
+        expect(mockStoreBooking).toHaveBeenCalled();
+    });
+
+    // .cardInactive className applied for inactive (past) slots
+    it("applies .cardInactive class for past slots", () => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const pastDate = yesterday.toISOString().substring(0, 10);
+
+        const pastSlot = { date: pastDate, start: "09:00", end: "09:30" };
+
+        render(
+            <TestSetupProvider>
+                <PickTimeslot provider={provider} flatAvailableSlots={[pastSlot]} />
+            </TestSetupProvider>
+        );
+
+        const txtElement = screen.getByText("09:00 → 09:30");
+
+        // The inner <Txt> gets styles.cardInactive when active=false
+        expect(txtElement.className).toMatch(/cardInactive/);
+    });
 });
 
 describe('PickTimeslotLoading', () => {

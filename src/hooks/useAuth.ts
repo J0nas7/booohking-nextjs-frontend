@@ -34,10 +34,10 @@ export const useAuth = () => {
     const handleRegister = async (formData: any): Promise<boolean> => {
         // Send data to the API for token generation
         try {
-            const data = await httpPostWithData("auth/register", formData)
+            const response = await httpPostWithData("auth/register", formData)
 
-            if (data.success !== true) {
-                const errors = data.response?.data?.errors
+            if (response.success !== true) {
+                const errors = response?.response?.data?.errors
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -45,13 +45,13 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(data.message || "Registration failed")
+                throw new Error(response.message || "Registration failed")
             }
 
             dispatch(setSnackMessage("Your account was created. Activation e-mail is sent."))
 
-            const emailStatus: string = data?.email_status
-            const token: string = data?.token
+            const emailStatus: string = response?.data?.email_status
+            const token: string = response?.data?.token
             if (emailStatus.includes("Failed to send email:")) {
                 router.push(`/activate-account?token=${token}`)
             } else {
@@ -76,10 +76,10 @@ export const useAuth = () => {
     const handleActivateAccount = async (token: string): Promise<boolean> => {
         // Send data to the API for token generation
         try {
-            const data = await httpPostWithData("auth/activate-account", { token })
+            const response = await httpPostWithData("auth/activate-account", { token })
 
-            if (data.success !== true) {
-                const errors = data.response?.data?.errors
+            if (response.success !== true) {
+                const errors = response?.response?.data?.errors
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -87,9 +87,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(
-                    data.response?.data?.message || data.message || "Activation failed"
-                )
+                throw new Error(response.message || "Activation failed")
             }
 
             dispatch(setSnackMessage("Your account was activated. You can now sign in."))
@@ -114,10 +112,10 @@ export const useAuth = () => {
         const forgotVariables = { User_Email: emailInput };
 
         try {
-            const data = await httpPostWithData("auth/forgot-password", forgotVariables);
+            const response = await httpPostWithData("auth/forgot-password", forgotVariables);
 
-            if (data.success !== true) {
-                const errors = data.response?.data?.errors;
+            if (response.success !== true) {
+                const errors = response?.response?.data?.errors
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -125,14 +123,14 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(data.message || "Registration failed")
+                throw new Error(response.message || "Registration failed")
             }
 
             dispatch(setSnackMessage("Reset-mail is sent to you."));
 
             // Success
-            const emailStatus: string = data?.email_status
-            const token: string = data?.token
+            const emailStatus: string = response?.email_status
+            const token: string = response?.token
             if (emailStatus.includes("Failed to send email:")) {
                 router.push(`/forgot-password/reset?token=${token}`);
             } else {
@@ -167,10 +165,10 @@ export const useAuth = () => {
         };
 
         try {
-            const data = await httpPostWithData("auth/reset-password", resetVariables);
+            const response = await httpPostWithData("auth/reset-password", resetVariables);
 
-            if (data.success !== true) {
-                const errors = data.response?.data?.errors;
+            if (response.success !== true) {
+                const errors = response?.response?.data?.errors
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat();
@@ -178,7 +176,7 @@ export const useAuth = () => {
                     throw new Error(message);
                 }
 
-                throw new Error(data.message || "Password reset failed");
+                throw new Error(response.message || "Password reset failed");
             }
 
             // Success
@@ -210,17 +208,17 @@ export const useAuth = () => {
     // Fetches the user's logged-in status from the server and updates the Redux store accordingly.
     const fetchIsLoggedInStatus = () => async (dispatch: Dispatch) => {
         try {
-            const data = await httpGetRequest("auth/me")
+            const response = await httpGetRequest("auth/me")
             // console.log("fetchIsLoggedInStatus", data)
             if (
-                data &&
-                data.userData &&
-                data.message === "Is logged in"
+                response &&
+                response?.data?.user &&
+                response.message === "Is logged in"
             ) {
                 // Update the Redux store with the user's logged-in status and details
                 // dispatch(setRefreshToken({ "data": jwtData.refreshToken }))
                 dispatch(setIsLoggedIn({ "data": true }))
-                dispatch(setAuthUser({ "data": data.userData }))
+                dispatch(setAuthUser({ "data": response.data.user }))
             } else {
                 deleteTheCookie("accessToken")
                 // Optionally handle the "not logged in" scenario

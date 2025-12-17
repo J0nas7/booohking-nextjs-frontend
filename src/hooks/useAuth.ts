@@ -45,7 +45,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.message || "Registration failed")
+                throw new Error(response.error || response.message || "Registration failed")
             }
 
             dispatch(setSnackMessage("Your account was created. Activation e-mail is sent."))
@@ -87,7 +87,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.message || "Activation failed")
+                throw new Error(response.error || response.message || "Activation failed")
             }
 
             dispatch(setSnackMessage("Your account was activated. You can now sign in."))
@@ -123,7 +123,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.message || "Registration failed")
+                throw new Error(response.error || response.message || "Registration failed")
             }
 
             dispatch(setSnackMessage("Reset-mail is sent to you."));
@@ -176,7 +176,7 @@ export const useAuth = () => {
                     throw new Error(message);
                 }
 
-                throw new Error(response.message || "Password reset failed");
+                throw new Error(response.error || response.message || "Password reset failed");
             }
 
             // Success

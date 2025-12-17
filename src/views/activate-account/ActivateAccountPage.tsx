@@ -26,7 +26,7 @@ export const ActivateAccountPage: React.FC = () => {
     }, [])
 
     // ---- React Query Mutation ----
-    const { mutate: doActivate, isPending: activatePending, error: activateError } = useMutation({
+    const { mutate: doActivate, isPending: activatePending, error: activateError, reset: activateReset } = useMutation({
         mutationFn: () => handleActivateAccount(token)
     })
 
@@ -36,6 +36,7 @@ export const ActivateAccountPage: React.FC = () => {
 
         const tempErrors: ActivateAccountFieldErrors = {}
         setFieldErrors({})
+        activateReset()
 
         if (!token.trim()) tempErrors.token = "Please provide your token"
 

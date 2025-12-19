@@ -14,7 +14,7 @@ describe('RegisterView', () => {
     const user: UserDTO = {
         name: '',
         User_Email: '',
-        User_Password: '',
+        password: '',
         role: 'ROLE_USER',
     };
 
@@ -74,7 +74,7 @@ describe('RegisterView', () => {
 
         const passwordInput = screen.getByLabelText(/^Password$/i);
         fireEvent.change(passwordInput, { target: { value: 'secret123' } });
-        expect(handleChangeMock).toHaveBeenCalledWith('User_Password', 'secret123');
+        expect(handleChangeMock).toHaveBeenCalledWith('password', 'secret123');
 
         const confirmInput = screen.getByLabelText(/Confirm Password/i);
         fireEvent.change(confirmInput, { target: { value: 'secret123' } });
@@ -85,7 +85,7 @@ describe('RegisterView', () => {
         const fieldErrors: RegisterPageFieldErrors = {
             name: 'Name required',
             User_Email: 'Invalid email',
-            User_Password: 'Password too short',
+            password: 'Password too short',
             PasswordConfirm: 'Passwords do not match',
         };
         props.fieldErrors = fieldErrors;

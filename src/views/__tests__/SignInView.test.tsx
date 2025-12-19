@@ -12,7 +12,7 @@ describe('SignInView', () => {
 
     const user: Partial<UserDTO> = {
         User_Email: '',
-        User_Password: ''
+        password: ''
     };
 
     beforeEach(() => {
@@ -58,12 +58,12 @@ describe('SignInView', () => {
 
         const passwordInput = screen.getByLabelText(/Password/i);
         fireEvent.change(passwordInput, { target: { value: 'secret123' } });
-        expect(handleChangeMock).toHaveBeenCalledWith('User_Password', 'secret123');
+        expect(handleChangeMock).toHaveBeenCalledWith('password', 'secret123');
     });
 
     it('displays field-specific errors', () => {
         props.fieldErrors.User_Email = 'Invalid email';
-        props.fieldErrors.User_Password = 'Password required';
+        props.fieldErrors.password = 'Password required';
         render(<SignInView {...props} />);
 
         expect(screen.getByText('Invalid email')).toBeInTheDocument();

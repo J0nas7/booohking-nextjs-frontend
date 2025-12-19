@@ -11,7 +11,7 @@ void React.createElement
 
 export type SignInFieldErrors = {
     User_Email?: string
-    User_Password?: string
+    password?: string
 }
 
 export interface SignInViewProps {
@@ -49,14 +49,14 @@ export const SignInView: React.FC<SignInViewProps> = (props) => (
                 <label>
                     <Container className={styles.authLabel}>
                         Password{" "}
-                        {props.fieldErrors.User_Password && (
-                            <Txt className={styles.authFieldError}>{props.fieldErrors.User_Password}</Txt>
+                        {props.fieldErrors.password && (
+                            <Txt className={styles.authFieldError}>{props.fieldErrors.password}</Txt>
                         )}
                     </Container>
                     <input
                         type="password"
-                        value={props.user.User_Password || ""}
-                        onChange={(e) => props.handleChange("User_Password", e.target.value)}
+                        value={props.user.password || ""}
+                        onChange={(e) => props.handleChange("password", e.target.value)}
                         className={styles.authInput}
                     />
                 </label>

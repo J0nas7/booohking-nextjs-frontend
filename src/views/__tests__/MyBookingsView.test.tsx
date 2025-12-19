@@ -18,7 +18,7 @@ const authUser: UserDTO = {
     User_ID: 1,
     name: 'Test User',
     User_Email: 'test@example.com',
-    User_Password: 'hashedpassword',
+    password: 'hashedpassword',
     role: 'ROLE_USER',
 };
 

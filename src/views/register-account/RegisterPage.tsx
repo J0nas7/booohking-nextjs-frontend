@@ -12,7 +12,7 @@ import { RegisterPageFieldErrors, RegisterView, RegisterViewProps } from '@/view
 const initialUser: UserDTO = {
     name: "",
     User_Email: "",
-    User_Password: "",
+    password: "",
     role: "ROLE_USER",
 }
 
@@ -34,7 +34,7 @@ export const RegisterPage: React.FC = () => {
     const { mutate: doRegister, isPending: registerPending, error: registerError } = useMutation({
         mutationFn: () => handleRegister({
             ...user,
-            User_Password_confirmation: passwordConfirm,
+            password_confirmation: passwordConfirm,
             acceptTerms: true // Temporarily just append acceptTerms, there is no user conditions yet
         })
     })
@@ -53,12 +53,12 @@ export const RegisterPage: React.FC = () => {
 
         if (!user.name.trim()) tempErrors.name = "Please provide a name"
         if (!user.User_Email.trim()) tempErrors.User_Email = "Please provide an email"
-        if (!user.User_Password) {
-            tempErrors.User_Password = "Please provide a password"
-        } else if (user.User_Password.length < 6) {
-            tempErrors.User_Password = "Password must be at least 6 characters"
+        if (!user.password) {
+            tempErrors.password = "Please provide a password"
+        } else if (user.password.length < 6) {
+            tempErrors.password = "Password must be at least 6 characters"
         }
-        if (user.User_Password !== passwordConfirm) {
+        if (user.password !== passwordConfirm) {
             tempErrors.PasswordConfirm = "Passwords do not match"
         }
 

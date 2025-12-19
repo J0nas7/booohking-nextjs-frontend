@@ -7,7 +7,6 @@ export interface UserDTO {
     User_Name: string;                  // User name (max 255 chars)
     User_Email: string;                 // Email (unique, max 255 chars)
     User_Password: string;              // Hashed password (max 255 chars)
-    User_Remember_Token?: string | null; // Optional remember token (max 100 chars)
     User_Email_VerifiedAt?: string | null; // ISO format
 
     User_Role: "ROLE_ADMIN" | "ROLE_USER"; // Enum
@@ -23,7 +22,6 @@ export type UserFields =
     | "User_Name"
     | "User_Email"
     | "User_Password"
-    | "User_Remember_Token"
     | "User_Email_VerifiedAt"
     | "User_Role"
     | "User_CreatedAt"

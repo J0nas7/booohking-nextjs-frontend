@@ -34,7 +34,7 @@ export const ForgotPasswordPage: React.FC = () => {
         const tempErrors: ForgotPasswordFieldErrors = {}
         setFieldErrors({})
 
-        if (!email.trim()) tempErrors.User_Email = "Please provide your email"
+        if (!email.trim()) tempErrors.email = "Please provide your email"
 
         if (Object.keys(tempErrors).length > 0) {
             setFieldErrors(tempErrors)

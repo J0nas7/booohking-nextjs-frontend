@@ -10,7 +10,7 @@ import { env, UserDTO } from "@/types"
 import { SignInFieldErrors, SignInView, SignInViewProps } from '@/views'
 
 const initialUser: Partial<UserDTO> = {
-    User_Email: "",
+    email: "",
     password: "",
 }
 
@@ -31,8 +31,8 @@ export const SignInPage: React.FC = () => {
     // --- React Query Mutation ---
     const { mutate: doLogin, isPending: loginPending, error: loginError } = useMutation({
         mutationFn: () => {
-            if (!user.User_Email || !user.password) return Promise.reject(new Error(""))
-            return handleLoginSubmit(user.User_Email, user.password)
+            if (!user.email || !user.password) return Promise.reject(new Error(""))
+            return handleLoginSubmit(user.email, user.password)
         },
     });
 
@@ -48,7 +48,7 @@ export const SignInPage: React.FC = () => {
         const tempErrors: SignInFieldErrors = {}
         setFieldErrors({})
 
-        if (!user.User_Email?.trim()) tempErrors.User_Email = "Please provide an email"
+        if (!user.email?.trim()) tempErrors.email = "Please provide an email"
         if (!user.password) tempErrors.password = "Please provide a password"
 
         if (Object.keys(tempErrors).length > 0) {
@@ -59,7 +59,7 @@ export const SignInPage: React.FC = () => {
         try {
             doLogin(undefined)
         } catch (err) {
-            setFieldErrors({ User_Email: "Login failed. Check credentials." })
+            setFieldErrors({ email: "Login failed. Check credentials." })
         }
     }
 

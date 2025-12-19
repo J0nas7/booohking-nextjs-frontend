@@ -111,7 +111,7 @@ export const useAuth = () => {
     }
 
     const handleForgotRequest = async (emailInput: string): Promise<boolean> => {
-        const forgotVariables = { User_Email: emailInput };
+        const forgotVariables = { email: emailInput };
 
         try {
             const response = await httpPostWithData("auth/forgot-password", forgotVariables);
@@ -238,7 +238,7 @@ export const useAuth = () => {
         }
 
         const loginVariables = {
-            User_Email: emailInput,
+            email: emailInput,
             password: passwordInput,
         }
 

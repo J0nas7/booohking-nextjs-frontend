@@ -9,7 +9,7 @@ import React from 'react'
 void React.createElement
 
 export type ForgotPasswordFieldErrors = {
-    User_Email?: string
+    email?: string
 }
 
 export interface ForgotPasswordViewProps {
@@ -32,8 +32,8 @@ export const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = (props) => 
                     <label>
                         <Container className={styles.authLabel}>
                             Email{" "}
-                            {props.fieldErrors.User_Email && (
-                                <Txt className={styles.authFieldError}>{props.fieldErrors.User_Email}</Txt>
+                            {props.fieldErrors.email && (
+                                <Txt className={styles.authFieldError}>{props.fieldErrors.email}</Txt>
                             )}
                         </Container>
                         <input

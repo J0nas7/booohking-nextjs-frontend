@@ -50,7 +50,7 @@ describe('ForgotPasswordView', () => {
     });
 
     it('displays field errors if present', () => {
-        props.fieldErrors.User_Email = 'Invalid email';
+        props.fieldErrors.email = 'Invalid email';
         render(<ForgotPasswordView {...props} />);
 
         expect(screen.getByText(/Invalid email/i)).toBeInTheDocument();

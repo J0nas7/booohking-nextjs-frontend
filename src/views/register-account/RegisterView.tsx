@@ -11,7 +11,7 @@ void React.createElement;
 
 export type RegisterPageFieldErrors = {
     name?: string
-    User_Email?: string
+    email?: string
     password?: string
     PasswordConfirm?: string
 }
@@ -54,14 +54,14 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
                     <label>
                         <Container className={styles.authLabel}>
                             Email{" "}
-                            {props.fieldErrors.User_Email && (
-                                <Txt className={styles.authFieldError}>{props.fieldErrors.User_Email}</Txt>
+                            {props.fieldErrors.email && (
+                                <Txt className={styles.authFieldError}>{props.fieldErrors.email}</Txt>
                             )}
                         </Container>
                         <input
                             type="email"
-                            value={props.user.User_Email}
-                            onChange={(e) => props.handleChange("User_Email", e.target.value)}
+                            value={props.user.email}
+                            onChange={(e) => props.handleChange("email", e.target.value)}
                             className={styles.authInput}
                         />
                     </label>

@@ -11,7 +11,7 @@ describe('SignInView', () => {
     let handleChangeMock: jest.Mock;
 
     const user: Partial<UserDTO> = {
-        User_Email: '',
+        email: '',
         password: ''
     };
 
@@ -54,7 +54,7 @@ describe('SignInView', () => {
 
         const emailInput = screen.getByLabelText(/Email/i);
         fireEvent.change(emailInput, { target: { value: 'user@example.com' } });
-        expect(handleChangeMock).toHaveBeenCalledWith('User_Email', 'user@example.com');
+        expect(handleChangeMock).toHaveBeenCalledWith('email', 'user@example.com');
 
         const passwordInput = screen.getByLabelText(/Password/i);
         fireEvent.change(passwordInput, { target: { value: 'secret123' } });
@@ -62,7 +62,7 @@ describe('SignInView', () => {
     });
 
     it('displays field-specific errors', () => {
-        props.fieldErrors.User_Email = 'Invalid email';
+        props.fieldErrors.email = 'Invalid email';
         props.fieldErrors.password = 'Password required';
         render(<SignInView {...props} />);
 

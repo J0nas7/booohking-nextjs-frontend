@@ -13,7 +13,7 @@ describe('RegisterView', () => {
 
     const user: UserDTO = {
         name: '',
-        User_Email: '',
+        email: '',
         password: '',
         role: 'ROLE_USER',
     };
@@ -70,7 +70,7 @@ describe('RegisterView', () => {
 
         const emailInput = screen.getByLabelText(/Email/i);
         fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-        expect(handleChangeMock).toHaveBeenCalledWith('User_Email', 'john@example.com');
+        expect(handleChangeMock).toHaveBeenCalledWith('email', 'john@example.com');
 
         const passwordInput = screen.getByLabelText(/^Password$/i);
         fireEvent.change(passwordInput, { target: { value: 'secret123' } });
@@ -84,7 +84,7 @@ describe('RegisterView', () => {
     it('displays field errors if present', () => {
         const fieldErrors: RegisterPageFieldErrors = {
             name: 'Name required',
-            User_Email: 'Invalid email',
+            email: 'Invalid email',
             password: 'Password too short',
             PasswordConfirm: 'Passwords do not match',
         };

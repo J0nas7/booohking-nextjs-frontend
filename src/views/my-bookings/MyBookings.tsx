@@ -105,7 +105,7 @@ export const MyBookings: React.FC<MyBookingsProps> = (props) => {
                             <Container className="mt-1">
                                 <Txt className="font-medium">Booked by:</Txt>{" "}
                                 {b.user?.name}{" "}
-                                <Txt className="text-xs">({b.user?.User_Email})</Txt>
+                                <Txt className="text-xs">({b.user?.email})</Txt>
                             </Container>
                         )}
                     </Container>

@@ -11,7 +11,7 @@ import { RegisterPageFieldErrors, RegisterView, RegisterViewProps } from '@/view
 
 const initialUser: UserDTO = {
     name: "",
-    User_Email: "",
+    email: "",
     password: "",
     role: "ROLE_USER",
 }
@@ -52,7 +52,7 @@ export const RegisterPage: React.FC = () => {
         setFieldErrors({})
 
         if (!user.name.trim()) tempErrors.name = "Please provide a name"
-        if (!user.User_Email.trim()) tempErrors.User_Email = "Please provide an email"
+        if (!user.email.trim()) tempErrors.email = "Please provide an email"
         if (!user.password) {
             tempErrors.password = "Please provide a password"
         } else if (user.password.length < 6) {

@@ -51,7 +51,7 @@ export const MyBookings: React.FC<MyBookingsProps> = (props) => {
             if (props.pov === "ADMIN") {
                 queryKey = [`admin_${API_RESOURCES.bookings.base}`]
             } else {
-                queryKey = [`my_${API_RESOURCES.bookings.base}`, props.authUser?.User_ID]
+                queryKey = [`my_${API_RESOURCES.bookings.base}`, props.authUser?.id]
             }
             queryClient.resetQueries({ queryKey: queryKey, exact: true })
             queryClient.removeQueries({ queryKey: queryKey })

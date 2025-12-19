@@ -3,7 +3,7 @@ import type { LoadingStateType } from "@/types";
 
 // User Type
 export interface UserDTO {
-    User_ID?: number;                   // Primary key
+    id?: number;                   // Primary key
     name: string;                  // User name (max 255 chars)
     email: string;                 // Email (unique, max 255 chars)
     password: string;              // Hashed password (max 255 chars)
@@ -18,7 +18,7 @@ export interface UserDTO {
 }
 
 export type UserFields =
-    | "User_ID"
+    | "id"
     | "name"
     | "email"
     | "password"

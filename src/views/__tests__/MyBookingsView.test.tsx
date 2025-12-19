@@ -15,7 +15,7 @@ jest.mock('@/views/my-bookings/MyBookings', () => ({
 
 // Sample data
 const authUser: UserDTO = {
-    User_ID: 1,
+    id: 1,
     name: 'Test User',
     email: 'test@example.com',
     password: 'hashedpassword',

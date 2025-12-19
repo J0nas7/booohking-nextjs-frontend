@@ -87,7 +87,7 @@ jest.mock('@fortawesome/react-fontawesome', () => ({
 // Mock the Redux hook
 jest.mock('@/redux', () => ({
     selectAuthUser: jest.fn(),
-    useTypedSelector: jest.fn((selector) => ({ User_ID: 1 })), // mock auth user
+    useTypedSelector: jest.fn((selector) => ({ id: 1 })), // mock auth user
     useAppDispatch: () => jest.fn(),
     setSnackMessage: jest.fn(),
 }));

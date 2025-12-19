@@ -19,7 +19,7 @@ describe('AdminBookingsView', () => {
     beforeEach(() => {
         props = {
             adminBookingsLoading: false,
-            authUser: { role: "ROLE_ADMIN", User_ID: 1 } as UserDTO,
+            authUser: { role: "ROLE_ADMIN", id: 1 } as UserDTO,
             flatAdminBookings: [],
         };
     });
@@ -48,7 +48,7 @@ describe('AdminBookingsView', () => {
     });
 
     it('does not render MyBookings if authUser is not admin', () => {
-        props.authUser = { role: "ROLE_USER", User_ID: 2 } as UserDTO;
+        props.authUser = { role: "ROLE_USER", id: 2 } as UserDTO;
         render(<AdminBookingsView {...props} />);
         expect(screen.queryByTestId('mock-my-bookings')).not.toBeInTheDocument();
     });

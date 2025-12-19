@@ -22,7 +22,7 @@ const UsersContext = createContext<UsersContextType | undefined>(undefined)
 // UsersProvider using useResourceContext
 export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const resource = "users"
-    const idFieldName = "User_ID"
+    const idFieldName = "id"
     const parentResource = "users"
 
     const {
@@ -32,7 +32,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         storeItem: storeUser,
         updateItem: updateUser,
         destroyItem: destroyUser
-    } = useResourceContext<UserDTO, "User_ID">(
+    } = useResourceContext<UserDTO, "id">(
         resource,
         idFieldName,
         parentResource

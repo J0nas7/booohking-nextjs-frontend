@@ -20,12 +20,12 @@ export const MyBookingsPage = () => {
     // ---- React Query Pagination ----
     // My bookings by userId
     const { data: renderMyBookings, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: myBookingsLoading } = useInfiniteQuery({
-        queryKey: [`my_${API_RESOURCES.bookings.base}`, authUser?.User_ID],
+        queryKey: [`my_${API_RESOURCES.bookings.base}`, authUser?.id],
         queryFn: async ({ pageParam = 1 }) =>
-            await indexBookingsById(authUser?.User_ID ?? 0),
+            await indexBookingsById(authUser?.id ?? 0),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1,
-        enabled: !!authUser?.User_ID,
+        enabled: !!authUser?.id,
         // DISABLE CACHE COMPLETELY
         staleTime: 0,      // always stale → always refetch
         gcTime: 0,         // delete from cache immediately when unused

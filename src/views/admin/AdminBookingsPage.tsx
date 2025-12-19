@@ -29,7 +29,7 @@ export const AdminBookingsPage = () => {
             await indexBookings(),
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1,
-        enabled: !!authUser?.User_ID,
+        enabled: !!authUser?.id,
         // DISABLE CACHE COMPLETELY
         staleTime: 0,      // always stale → always refetch
         gcTime: 0,         // delete from cache immediately when unused

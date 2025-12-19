@@ -36,7 +36,7 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
 
     // --- React Query Mutation ---
     const { mutate: doCreateBooking, isPending: createBookingPending } = useMutation<any, Error, BookingDTO>({
-        mutationFn: async (newBooking) => storeBooking(authUser?.User_ID ?? 0, newBooking),
+        mutationFn: async (newBooking) => storeBooking(authUser?.id ?? 0, newBooking),
         // If the mutation fails
         onError: (err, _, context) => {
             dispatch(setSnackMessage("Something went wrong booking the slot. Try again."))
@@ -51,7 +51,7 @@ export const PickTimeslot: React.FC<PickTimeslotProps> = (props) => {
         if (authUser && props.provider) {
             setPickedSlot(slot)
             const newBooking: BookingDTO = {
-                User_ID: authUser.User_ID ?? 0,
+                User_ID: authUser.id ?? 0,
                 Provider_ID: props.provider.Provider_ID ?? 0,
                 Service_ID: props.provider.service?.Service_ID ?? 0,
                 Booking_StartAt: new Date(`${slot.date} ${slot.start}`).toISOString(),

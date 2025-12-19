@@ -15,7 +15,7 @@ jest.mock('next/navigation', () => ({
 const mockDispatch = jest.fn();
 jest.mock('@/redux', () => ({
     useAppDispatch: () => mockDispatch,
-    useTypedSelector: jest.fn(() => ({ User_ID: 1, User_Role: 'ROLE_USER' })),
+    useTypedSelector: jest.fn(() => ({ User_ID: 1, role: 'ROLE_USER' })),
     selectAuthUser: jest.fn(),
     setSnackMessage: jest.fn(),
 }));

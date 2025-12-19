@@ -295,7 +295,7 @@ export const useAuth = () => {
     }
 
     const iADMIN = (): boolean => {
-        if (authUser && authUser.User_Role === "ROLE_ADMIN") return true
+        if (authUser && authUser.role === "ROLE_ADMIN") return true
 
         return false
     }

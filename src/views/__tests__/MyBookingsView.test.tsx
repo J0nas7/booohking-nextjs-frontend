@@ -19,7 +19,7 @@ const authUser: UserDTO = {
     User_Name: 'Test User',
     User_Email: 'test@example.com',
     User_Password: 'hashedpassword',
-    User_Role: 'ROLE_USER',
+    role: 'ROLE_USER',
 };
 
 const flatMyBookings: BookingDTO[] = [

@@ -35,7 +35,7 @@ export const AdminBookingsView: React.FC<AdminBookingsViewProps> = (props) => (
             renderItem={props.flatAdminBookings}
             permitted={true}
         >
-            {props.authUser && props.authUser.User_Role === "ROLE_ADMIN" && props.flatAdminBookings && (
+            {props.authUser && props.authUser.role === "ROLE_ADMIN" && props.flatAdminBookings && (
                 <MyBookings flatMyBookings={props.flatAdminBookings} authUser={props.authUser} pov="ADMIN" />
             )}
         </LoadingState>

@@ -13,7 +13,7 @@ const initialUser: UserDTO = {
     User_Name: "",
     User_Email: "",
     User_Password: "",
-    User_Role: "ROLE_USER",
+    role: "ROLE_USER",
 }
 
 export const RegisterPage: React.FC = () => {

@@ -9,7 +9,7 @@ export interface UserDTO {
     User_Password: string;              // Hashed password (max 255 chars)
     email_verified_at?: string | null; // ISO format
 
-    User_Role: "ROLE_ADMIN" | "ROLE_USER"; // Enum
+    role: "ROLE_ADMIN" | "ROLE_USER"; // Enum
 
     // Date fields
     User_CreatedAt?: string | null;    // ISO format
@@ -23,7 +23,7 @@ export type UserFields =
     | "User_Email"
     | "User_Password"
     | "email_verified_at"
-    | "User_Role"
+    | "role"
     | "User_CreatedAt"
     | "User_UpdatedAt"
     | "User_DeletedAt"

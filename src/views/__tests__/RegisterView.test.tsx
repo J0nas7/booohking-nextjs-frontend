@@ -12,7 +12,7 @@ describe('RegisterView', () => {
     let setPasswordConfirmMock: jest.Mock;
 
     const user: UserDTO = {
-        User_Name: '',
+        name: '',
         User_Email: '',
         User_Password: '',
         role: 'ROLE_USER',
@@ -66,7 +66,7 @@ describe('RegisterView', () => {
 
         const nameInput = screen.getByLabelText(/Name/i);
         fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-        expect(handleChangeMock).toHaveBeenCalledWith('User_Name', 'John Doe');
+        expect(handleChangeMock).toHaveBeenCalledWith('name', 'John Doe');
 
         const emailInput = screen.getByLabelText(/Email/i);
         fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
@@ -83,7 +83,7 @@ describe('RegisterView', () => {
 
     it('displays field errors if present', () => {
         const fieldErrors: RegisterPageFieldErrors = {
-            User_Name: 'Name required',
+            name: 'Name required',
             User_Email: 'Invalid email',
             User_Password: 'Password too short',
             PasswordConfirm: 'Passwords do not match',

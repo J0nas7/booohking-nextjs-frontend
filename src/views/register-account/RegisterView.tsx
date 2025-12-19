@@ -10,7 +10,7 @@ import { Btn, Container, H1, LoadingButton, Paragraph, Txt } from '@/ui';
 void React.createElement;
 
 export type RegisterPageFieldErrors = {
-    User_Name?: string
+    name?: string
     User_Email?: string
     User_Password?: string
     PasswordConfirm?: string
@@ -38,14 +38,14 @@ export const RegisterView: React.FC<RegisterViewProps> = (props) => {
                     <label>
                         <Container className={styles.authLabel}>
                             Name{" "}
-                            {props.fieldErrors.User_Name && (
-                                <Txt className={styles.authFieldError}>{props.fieldErrors.User_Name}</Txt>
+                            {props.fieldErrors.name && (
+                                <Txt className={styles.authFieldError}>{props.fieldErrors.name}</Txt>
                             )}
                         </Container>
                         <input
                             type="text"
-                            value={props.user.User_Name}
-                            onChange={(e) => props.handleChange("User_Name", e.target.value)}
+                            value={props.user.name}
+                            onChange={(e) => props.handleChange("name", e.target.value)}
                             className={styles.authInput}
                         />
                     </label>

@@ -10,7 +10,7 @@ import { env, UserDTO } from "@/types"
 import { RegisterPageFieldErrors, RegisterView, RegisterViewProps } from '@/views'
 
 const initialUser: UserDTO = {
-    User_Name: "",
+    name: "",
     User_Email: "",
     User_Password: "",
     role: "ROLE_USER",
@@ -51,7 +51,7 @@ export const RegisterPage: React.FC = () => {
         const tempErrors: RegisterPageFieldErrors = {}
         setFieldErrors({})
 
-        if (!user.User_Name.trim()) tempErrors.User_Name = "Please provide a name"
+        if (!user.name.trim()) tempErrors.name = "Please provide a name"
         if (!user.User_Email.trim()) tempErrors.User_Email = "Please provide an email"
         if (!user.User_Password) {
             tempErrors.User_Password = "Please provide a password"

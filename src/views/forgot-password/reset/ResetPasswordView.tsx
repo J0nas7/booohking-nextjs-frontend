@@ -6,6 +6,7 @@ import React from 'react'
 void React.createElement
 
 export type ResetPasswordFieldErrors = {
+    email?: string
     token?: string
     password?: string
     passwordConfirm?: string
@@ -84,9 +85,9 @@ export const ResetPasswordView: React.FC<ResetPasswordViewProps> = (props) => (
                 </label>
 
                 {/* Show API error from handleResetPassword */}
-                {props.resetError && (
+                {Boolean(props.fieldErrors.email || props.resetError) && (
                     <Container className={styles.authError}>
-                        {(props.resetError as Error).message || "Request failed. Please try again."}
+                        {props.fieldErrors.email || (props.resetError as Error).message || "Request failed. Please try again."}
                     </Container>
                 )}
 

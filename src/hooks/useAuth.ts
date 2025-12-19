@@ -38,6 +38,7 @@ export const useAuth = () => {
 
             if (response.success !== true) {
                 const errors = response?.response?.data?.errors
+                const error = response?.response?.data?.error
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -45,7 +46,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.error || response.message || "Registration failed")
+                throw new Error(response.error || error || response.message || "Registration failed")
             }
 
             dispatch(setSnackMessage("Your account was created. Activation e-mail is sent."))
@@ -80,6 +81,7 @@ export const useAuth = () => {
 
             if (response.success !== true) {
                 const errors = response?.response?.data?.errors
+                const error = response?.response?.data?.error
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -87,7 +89,7 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.error || response.message || "Activation failed")
+                throw new Error(response.error || error || response.message || "Activation failed")
             }
 
             dispatch(setSnackMessage("Your account was activated. You can now sign in."))
@@ -113,9 +115,11 @@ export const useAuth = () => {
 
         try {
             const response = await httpPostWithData("auth/forgot-password", forgotVariables);
+            console.log("auth/forgot-password", response)
 
             if (response.success !== true) {
                 const errors = response?.response?.data?.errors
+                const error = response?.response?.data?.error
 
                 if (errors && typeof errors === "object") {
                     const messages = Object.values(errors).flat()
@@ -123,19 +127,11 @@ export const useAuth = () => {
                     throw new Error(message)
                 }
 
-                throw new Error(response.error || response.message || "Registration failed")
+                throw new Error(response.error || error || response.message || "Reset password request failed")
             }
 
-            dispatch(setSnackMessage("Reset-mail is sent to you."));
-
-            // Success
-            const emailStatus: string = response?.email_status
-            const token: string = response?.token
-            if (emailStatus.includes("Failed to send email:")) {
-                router.push(`/forgot-password/reset?token=${token}`);
-            } else {
-                router.push("/forgot-password/reset");
-            }
+            dispatch(setSnackMessage("Reset email has been sent to you."));
+            router.push(`/forgot-password/reset?email=${emailInput}`);
 
             return true;
         } catch (err) {
@@ -154,14 +150,16 @@ export const useAuth = () => {
     };
 
     const handleResetPassword = async (
+        email: string,
         token: string,
         password: string,
         passwordConfirm: string
     ): Promise<boolean> => {
         const resetVariables = {
-            User_Remember_Token: token,
-            New_User_Password: password,
-            New_User_Password_confirmation: passwordConfirm
+            email,
+            token,
+            password,
+            password_confirmation: passwordConfirm
         };
 
         try {
@@ -169,14 +167,15 @@ export const useAuth = () => {
 
             if (response.success !== true) {
                 const errors = response?.response?.data?.errors
+                const error = response?.response?.data?.error
 
                 if (errors && typeof errors === "object") {
-                    const messages = Object.values(errors).flat();
-                    const message = messages.join(" ");
-                    throw new Error(message);
+                    const messages = Object.values(errors).flat()
+                    const message = messages.join(" ")
+                    throw new Error(message)
                 }
 
-                throw new Error(response.error || response.message || "Password reset failed");
+                throw new Error(response.error || error || response.message || "Registration failed")
             }
 
             // Success

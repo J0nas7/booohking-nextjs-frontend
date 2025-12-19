@@ -17,6 +17,7 @@ export const ResetPasswordPage: React.FC = () => {
 
     // ---- State ----
     const mailToken = searchParams.get("token")
+    const emailParam = searchParams.get("email") || ""
     const [token, setToken] = useState<string>(mailToken || "")
     const [password, setPassword] = useState<string>("")
     const [passwordConfirm, setPasswordConfirm] = useState<string>("")
@@ -30,6 +31,7 @@ export const ResetPasswordPage: React.FC = () => {
     // ---- React Query Mutation ----
     const { mutate: doReset, isPending: resetPending, error: resetError } = useMutation({
         mutationFn: () => handleResetPassword(
+            emailParam,
             token,
             password,
             passwordConfirm
@@ -43,6 +45,7 @@ export const ResetPasswordPage: React.FC = () => {
         const tempErrors: ResetPasswordFieldErrors = {}
         setFieldErrors({})
 
+        if (!emailParam.trim()) tempErrors.email = "Email is missing from URL"
         if (!token.trim()) tempErrors.token = "Please provide your reset token"
         if (!password.trim()) {
             tempErrors.password = "Please provide your new password"

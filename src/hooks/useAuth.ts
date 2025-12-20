@@ -31,49 +31,6 @@ export const useAuth = () => {
     const { httpGetRequest, httpPostWithData } = useAxios()
 
     // ---- Methods ----
-    const handleRegister = async (formData: any): Promise<boolean> => {
-        // Send data to the API for token generation
-        try {
-            const response = await httpPostWithData("auth/register", formData)
-
-            if (response.success !== true) {
-                const errors = response?.response?.data?.errors
-                const error = response?.response?.data?.error
-
-                if (errors && typeof errors === "object") {
-                    const messages = Object.values(errors).flat()
-                    const message = messages.join(" ")
-                    throw new Error(message)
-                }
-
-                throw new Error(response.error || error || response.message || "Registration failed")
-            }
-
-            dispatch(setSnackMessage("Your account was created. Activation e-mail is sent."))
-
-            const emailStatus: string = response?.data?.email_status
-            const token: string = response?.data?.token
-            if (emailStatus.includes("Failed to send email:")) {
-                router.push(`/activate-account?token=${token}`)
-            } else {
-                router.push("/activate-account")
-            }
-            return true
-        } catch (err) {
-            console.log("useAuth register error:", err)
-
-            if (err instanceof Error) {
-                dispatch(setSnackMessage(err.message))
-                throw err
-            }
-
-            // fallback (should almost never hit)
-            const fallback = "Register-request failed. Try again."
-            dispatch(setSnackMessage(fallback))
-            throw new Error(fallback)
-        }
-    }
-
     const handleActivateAccount = async (token: string): Promise<boolean> => {
         // Send data to the API for token generation
         try {
@@ -315,7 +272,6 @@ export const useAuth = () => {
     }, [])
 
     return {
-        handleRegister,
         handleActivateAccount,
         handleForgotRequest,
         handleResetPassword,

@@ -4,7 +4,7 @@
 import React, { createContext, useContext } from "react"
 
 // Internal
-import { useResourceContext } from "@/hooks"
+import { ServiceResponse, useResourceContext } from "@/hooks"
 import type { ProviderWorkingHoursDTO } from "@/types"
 
 // ProviderWorkingHours Context
@@ -12,7 +12,7 @@ export type ProviderWorkingHoursContextType = {
     indexProvidersWH: () => Promise<any>
     indexProvidersWHById: (parentId: number) => Promise<any>
     showProviderWH: (itemId: number) => Promise<any>
-    storeProviderWH: (parentId: number, object?: ProviderWorkingHoursDTO | undefined) => Promise<false | ProviderWorkingHoursDTO>
+    storeProviderWH: (parentId: number, object?: ProviderWorkingHoursDTO | undefined) => Promise<ServiceResponse<ProviderWorkingHoursDTO>>
     updateProviderWH: (itemChanges: ProviderWorkingHoursDTO, parentId: number) => Promise<boolean>
     destroyProviderWH: (itemId: number, parentId: number, redirect: string | undefined) => Promise<void>
 }

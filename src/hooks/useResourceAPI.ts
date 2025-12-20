@@ -22,6 +22,14 @@ interface APIResponse<T> {
     message?: string;
 }
 
+export interface ServiceResponse<T = any> {
+    success: boolean;
+    data?: any;           // Generic to allow any type of data (like objects, arrays, etc.)
+    message?: string;    // Optional message for success or error
+    errors?: string[];   // Array of validation errors
+    error?: string;      // A general error message
+}
+
 // Define the ID field constraint with a dynamic key
 type HasIDField<T, IDKey extends string> = T & {
     [key in IDKey]: number; // Define the dynamic ID field based on the resource
@@ -91,18 +99,35 @@ export const useResourceAPI = <T extends { [key: string]: any }, IDKey extends k
     };
 
     // Create a new item (C in CRUD)
-    const postItem = async (newItem: Omit<T, IDKey>) => {
+    const postItem = async (newItem?: Omit<T, IDKey>): Promise<ServiceResponse<T>> => {
         const endpoint = resourceConfig.base
         try {
-            const data: APIResponse<T> = await httpPostWithData(endpoint, newItem);
+            const data: ServiceResponse<T> = await httpPostWithData(endpoint, newItem);
             console.log(`postItem ${endpoint}`, data)
 
-            if (data) return data
+            // If the response contains data, return it in the ServiceResponse format
+            if (data.data) {
+                return {
+                    success: data.success,
+                    data: data.data,
+                    message: data.message,
+                };
+            }
 
-            throw new Error(`Failed to postItem ${endpoint}`);
+            // Return failure ServiceResponse format
+            return {
+                success: data.success,
+                error: data.error,
+                errors: data.errors,
+            }
         } catch (error: any) {
             console.log(error.message || `An error occurred while postItem ${endpoint}.`);
-            return false;
+
+            // Return a ServiceResponse indicating an error occurred
+            return {
+                success: false,
+                error: error.message || `Failed to post item to ${endpoint}`,
+            };
         }
     };
 

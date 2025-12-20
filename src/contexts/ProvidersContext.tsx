@@ -4,7 +4,7 @@
 import React, { createContext, useContext } from "react"
 
 // Internal
-import { useAxios, useResourceContext } from "@/hooks"
+import { ServiceResponse, useAxios, useResourceContext } from "@/hooks"
 import type { ProviderDTO } from "@/types"
 
 // Providers Context
@@ -12,7 +12,7 @@ export type ProvidersContextType = {
     indexProviders: () => Promise<any>
     indexProvidersById: (parentId: number) => Promise<any>
     showProvider: (itemId: number) => Promise<any>
-    storeProvider: (parentId: number, object?: ProviderDTO | undefined) => Promise<false | ProviderDTO>
+    storeProvider: (parentId: number, object?: ProviderDTO | undefined) => Promise<ServiceResponse<ProviderDTO>>
     updateProvider: (itemChanges: ProviderDTO, parentId: number) => Promise<boolean>
     destroyProvider: (itemId: number, parentId: number, redirect: string | undefined) => Promise<void>
 

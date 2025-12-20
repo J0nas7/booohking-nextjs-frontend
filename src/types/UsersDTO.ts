@@ -12,9 +12,8 @@ export interface UserDTO {
     role: "ROLE_ADMIN" | "ROLE_USER"; // Enum
 
     // Date fields
-    User_CreatedAt?: string | null;    // ISO format
-    User_UpdatedAt?: string | null;    // ISO format
-    User_DeletedAt?: string | null;    // ISO format
+    created_at?: string | null;    // ISO format
+    updated_at?: string | null;    // ISO format
 }
 
 export type UserFields =
@@ -24,9 +23,8 @@ export type UserFields =
     | "password"
     | "email_verified_at"
     | "role"
-    | "User_CreatedAt"
-    | "User_UpdatedAt"
-    | "User_DeletedAt"
+    | "created_at"
+    | "updated_at"
 
 export type UserStates = UserDTO | LoadingStateType
 export type UsersStates = UserDTO[] | LoadingStateType

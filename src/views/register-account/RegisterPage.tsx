@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import React, { useEffect, useState } from "react"
 
 // Internal
-import { useAuth } from '@/hooks'
+import { useUsersContext } from '@/contexts'
 import { env, UserDTO } from "@/types"
 import { RegisterPageFieldErrors, RegisterView, RegisterViewProps } from '@/views'
 
@@ -18,7 +18,7 @@ const initialUser: UserDTO = {
 
 export const RegisterPage: React.FC = () => {
     // ---- Hooks ----
-    const { handleRegister } = useAuth()
+    const { handleRegister } = useUsersContext()
 
     // ---- State ----
     const [user, setUser] = useState<UserDTO>(initialUser)

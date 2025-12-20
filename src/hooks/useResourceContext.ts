@@ -40,14 +40,9 @@ export const useResourceContext = <T extends { [key: string]: any }, IDKey exten
     }
 
     const storeItem = async (parentId: number, object?: T) => {
-        if (object) {
-            const createdItem = await postItem(object)
+        const createdItem = await postItem(object)
 
-            if (createdItem) {
-                return createdItem as unknown as T
-            }
-        }
-        return false
+        return createdItem
     }
 
     const updateItem = async (itemChanges: T, parentId: number) => {

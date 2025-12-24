@@ -48,8 +48,10 @@ export const ProvidersProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (serviceId) params.push(`service_id=${serviceId}`);
         const query = params.length ? `?${params.join("&")}` : "";
 
-        const response = await httpGetRequest(`bookings/${providerId}/available-slots${query}`);
+        const url = `bookings/${providerId}/available-slots${query}`
+        const response = await httpGetRequest(url);
         if (!response.success) throw new Error("Failed to load available slots");
+        console.log("availableSlots", response, url)
         return response;
     };
 

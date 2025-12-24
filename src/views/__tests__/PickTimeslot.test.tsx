@@ -41,8 +41,15 @@ describe('PickTimeslot', () => {
     it('renders slots grouped by date', () => {
         render(<PickTimeslot provider={provider} flatAvailableSlots={flatAvailableSlots} />);
 
+        const slotDate = new Date(flatAvailableSlots[0].date + 'T12:00:00');
+
         // Create a flexible date format matcher
-        const expectedDate = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+        const expectedDate = slotDate.toLocaleDateString(undefined, {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
 
         // Find the h3 element containing the date text
         const dateHeader = screen.getByText((content, element) => {

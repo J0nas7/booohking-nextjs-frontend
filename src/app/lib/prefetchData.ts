@@ -37,7 +37,7 @@ export async function customPrefetchData({ queryKey, endpoint, actionType = 'get
             queryKey,
             queryFn: async () => {
                 const response = await fetcher(endpoint, actionType)
-                return response
+                return response.data
             }
         })
     } else {
@@ -45,7 +45,7 @@ export async function customPrefetchData({ queryKey, endpoint, actionType = 'get
             queryKey,
             queryFn: async ({ pageParam = initialPageParam }) => {
                 const response = await fetcher(endpoint, actionType);
-                return response
+                return response.data
             },
             getNextPageParam: (lastPage: any) => lastPage?.nextPage ?? null,
             initialPageParam,

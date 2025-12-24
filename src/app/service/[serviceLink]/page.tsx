@@ -52,8 +52,11 @@ async function fetchPageQueryClient(serviceId: number, queryKeyService: (number 
     // Prefetch service
     await queryClient.prefetchQuery({
         queryKey: queryKeyService,
-        queryFn: async () =>
-            await serverGet(API_RESOURCES.services.byId(serviceId))
+        queryFn: async () => {
+            const response = await serverGet(API_RESOURCES.services.byId(serviceId))
+
+            return response.data
+        }
     });
 
     // Read the service from cache
@@ -67,9 +70,9 @@ async function fetchPageQueryClient(serviceId: number, queryKeyService: (number 
         await queryClient.prefetchInfiniteQuery({
             queryKey: infiniteKey,
             queryFn: async ({ pageParam = 1 }) => {
-                const data = await serverGet(API_RESOURCES.providers.byParent?.(serviceId) || "");
+                const response = await serverGet(API_RESOURCES.providers.byParent?.(serviceId) || "");
 
-                return data
+                return response.data
             },
             getNextPageParam: (lastPage: any) => {
                 if (!lastPage?.pagination) return undefined;

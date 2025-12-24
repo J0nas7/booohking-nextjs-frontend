@@ -52,8 +52,10 @@ async function fetchPageQueryClient(providerId: number, queryKeyProvider: (numbe
     // Prefetch provider
     await queryClient.prefetchQuery({
         queryKey: queryKeyProvider,
-        queryFn: async () =>
-            await serverGet(API_RESOURCES.providers.byId(providerId))
+        queryFn: async () => {
+            const response = await serverGet(API_RESOURCES.providers.byId(providerId))
+            return response.data
+        }
     });
 
     // Read the provider from cache
@@ -73,9 +75,11 @@ async function fetchPageQueryClient(providerId: number, queryKeyProvider: (numbe
 
                 const query = params.length ? `?${params.join("&")}` : "";
 
-                const data = await serverGet(`bookings/${providerId}/available-slots${query}`);
+                const url = `bookings/${providerId}/available-slots${query}`
+                const response = await serverGet(url);
+                console.log("availableSlots", response, url)
 
-                return data
+                return response.data
             },
             getNextPageParam: (lastPage: any) => {
                 if (!lastPage?.pagination) return undefined;

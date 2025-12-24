@@ -27,7 +27,10 @@ export const ServicePage = () => {
     // Providers pagination query by serviceId
     const { data: dataProviders, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
         queryKey: [API_RESOURCES.providers.base, parseInt(serviceId)],
-        queryFn: async ({ pageParam = 1 }) => await indexProvidersById(parseInt(serviceId)),
+        queryFn: async ({ pageParam = 1 }) => {
+            const response = await indexProvidersById(parseInt(serviceId))
+            return response.data
+        },
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1
     });
@@ -35,7 +38,11 @@ export const ServicePage = () => {
     // Service query by serviceId
     const { data: dataService, isLoading: serviceLoading } = useQuery<ServiceStates>({
         queryKey: [RESOURCE_META.services.singular, parseInt(serviceId)],
-        queryFn: async () => await showService(parseInt(serviceId)),
+        queryFn: async () => {
+            const response = await showService(parseInt(serviceId))
+
+            return response.data
+        },
         enabled: !!serviceId
     })
 

@@ -21,7 +21,10 @@ export const ServicesOverviewPage = () => {
     // --- React Query Pagination ---
     const { data: renderServices, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: providersLoading } = useInfiniteQuery({
         queryKey: [API_RESOURCES.services.base, 1],
-        queryFn: async ({ pageParam = 1 }) => await indexServicesById(1),
+        queryFn: async ({ pageParam = 1 }) => {
+            const response = await indexServicesById(1)
+            return response.data
+        },
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1
     });

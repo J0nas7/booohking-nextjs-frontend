@@ -25,8 +25,10 @@ export const AdminBookingsPage = () => {
     // My bookings by userId
     const { data: renderAdminBookings, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: adminBookingsLoading } = useInfiniteQuery({
         queryKey: [`admin_${API_RESOURCES.bookings.base}`],
-        queryFn: async ({ pageParam = 1 }) =>
-            await indexBookings(),
+        queryFn: async ({ pageParam = 1 }) => {
+            const response = await indexBookings()
+            return response.data
+        },
         getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,
         initialPageParam: 1,
         enabled: !!authUser?.id,

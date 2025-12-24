@@ -29,7 +29,10 @@ export const BookingProviderPage = () => {
     // Provider query by providerId
     const { data: providerData, isLoading: providerLoading } = useQuery<ProviderStates>({
         queryKey: [RESOURCE_META.providers.singular, parseInt(providerId)],
-        queryFn: async () => await showProvider(parseInt(providerId)),
+        queryFn: async () => {
+            const response = await showProvider(parseInt(providerId))
+            return response.data
+        },
         enabled: !!providerId // only fetch if ID exists
     })
 
@@ -37,11 +40,14 @@ export const BookingProviderPage = () => {
     const infiniteKey = [`availableSlots`, parseInt(providerId)]
     const { data: renderAvailableSlots, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading: availableSlotsLoading } = useInfiniteQuery({
         queryKey: infiniteKey,
-        queryFn: async ({ pageParam = 1 }) => await readAvailableSlots(
-            parseInt(providerId),
-            providerData && providerData.Service_ID || 0,
-            pageParam
-        ),
+        queryFn: async ({ pageParam = 1 }) => {
+            const response = await readAvailableSlots(
+                parseInt(providerId),
+                providerData && providerData.Service_ID || 0,
+                pageParam
+            )
+            return response.data
+        },
         getNextPageParam: (lastPage) => {
             if (!lastPage?.pagination) return undefined;
             return lastPage.pagination.currentPage < lastPage.pagination.lastPage

@@ -16,7 +16,7 @@ export async function generateMetadata(
     const queryClient = await fetchPageQueryClient()
     const pageData: InfiniteData<any, unknown> | undefined = queryClient.getQueryData(queryKey)
 
-    const total = pageData?.pages?.[0]?.pagination?.total ?? 0
+    const total = pageData?.pages?.[0]?.pagination?.total ?? 0;
 
     return { title: `Services: Choose between ${total} - ${env.app_name}` }
 }

@@ -202,6 +202,7 @@ export const useAuth = () => {
         // Send loginVariables to the API for authentication
         try {
             const data = await httpPostWithData("auth/login", loginVariables)
+            console.log("auth/login", data)
             const success = processLoginResult("login", data)
 
             if (!success) {

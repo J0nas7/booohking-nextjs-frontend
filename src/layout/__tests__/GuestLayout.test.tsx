@@ -14,12 +14,14 @@ describe('GuestLayout Component', () => {
         expect(screen.getByTestId('guest-wrapper')).toBeInTheDocument();
     });
 
-    it('displays the ghost logo and "Booohking" text', () => {
+    it('displays the ghost logo, normal logo, and "Booohking" text', () => {
         render(<GuestLayout />);
         const ghostLogo = screen.getByTestId('ghost-logo');
+        const normalLogo = screen.getByTestId('normal-logo');
         const booohkingText = screen.getByText('Booohking');
 
         expect(ghostLogo).toBeInTheDocument();
+        expect(normalLogo).toBeInTheDocument();
         expect(booohkingText).toBeInTheDocument();
     });
 

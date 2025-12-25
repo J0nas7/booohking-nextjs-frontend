@@ -16,6 +16,12 @@ exports[`GuestLayout Component matches the snapshot 1`] = `
         data-size="10x"
         data-testid="ghost-logo"
       />
+      <div
+        class="normal-logo"
+        data-icon="[object Object]"
+        data-size="5x"
+        data-testid="normal-logo"
+      />
       <span>
         Booohking
       </span>

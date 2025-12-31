@@ -11,7 +11,6 @@ resource "scaleway_container" "nextjs_app" {
 
   environment_variables = {
     NODE_ENV = "production"
-    PORT     = "3000"
   }
 }
 

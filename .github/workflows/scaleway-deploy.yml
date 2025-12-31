@@ -29,6 +29,8 @@ jobs:
           TIMESTAMP=$(date +%d-%b-%Y__%H.%M.%S)
           IMAGE="${{ env.SCW_REGISTRY }}/${{ env.IMAGE_NAME }}:$TIMESTAMP"
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          echo "REGISTRY=${{ env.SCW_REGISTRY }}"
+          echo "IMAGE_NAME=${{ env.IMAGE_NAME }}"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4

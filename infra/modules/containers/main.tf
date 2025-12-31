@@ -1,5 +1,5 @@
 resource "scaleway_container" "nextjs_app" {
-  name           = "${var.container_name}-${replace(var.registry_image, "[:/]", "-")}"
+  name           = var.container_name
   namespace_id   = var.namespace_id
   registry_image = var.registry_image
 

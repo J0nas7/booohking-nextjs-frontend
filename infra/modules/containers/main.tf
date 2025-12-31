@@ -14,3 +14,12 @@ resource "scaleway_container" "nextjs_app" {
     PORT     = "3000"
   }
 }
+
+terraform {
+  required_providers {
+    scaleway = {
+      source  = "scaleway/scaleway"
+      version = "~> 2.9"
+    }
+  }
+}

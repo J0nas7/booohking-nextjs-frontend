@@ -4,7 +4,7 @@ data "scaleway_container_namespace" "nextjs_namespace" {
 }
 
 module "nextjs_app" {
-  source = "./modules/frontend"
+  source = "./modules/containers"
 
   container_name = var.container_name
   registry_image = var.registry_image

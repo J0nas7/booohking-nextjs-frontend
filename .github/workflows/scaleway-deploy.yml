@@ -29,8 +29,6 @@ jobs:
           TIMESTAMP=$(date +%d-%b-%Y__%H.%M.%S)
           IMAGE="${{ env.SCW_REGISTRY }}/${{ env.IMAGE_NAME }}:$TIMESTAMP"
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-          echo "REGISTRY=${{ env.SCW_REGISTRY }}"
-          echo "IMAGE_NAME=${{ env.IMAGE_NAME }}"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -59,7 +57,7 @@ jobs:
         run: terraform plan -out=tfplan \
           -var="registry_image=${{ env.IMAGE }}"
         env:
-          TF_VAR_container_name: ${{ secrets.SCW_FRONTEND_CONTAINER_NAME }}
+          TF_VAR_container_name: ${{ secrets.SCW_CONTAINER_NAME }}
           TF_VAR_namespace_name: ${{ secrets.SCW_NAMESPACE_NAME }}
 
       - name: Terraform Apply

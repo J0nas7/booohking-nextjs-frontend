@@ -1,0 +1,70 @@
+name: Deploy Next.js Frontend to Scaleway
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  SCW_REGISTRY: ${{ secrets.SCW_REGISTRY }}
+  IMAGE_NAME: ${{ secrets.FRONTEND_IMAGE_NAME }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Scaleway Container Registry
+        run: |
+          echo "${{ secrets.SCW_SECRET_KEY }}" | docker login rg.fr-par.scw.cloud -u nologin --password-stdin
+
+      - name: Set image tag
+        run: |
+          TAG=$(date +%Y%m%d-%H%M%S)
+          IMAGE="${{ env.SCW_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          SCW_DEFAULT_REGION: fr-par
+
+      - name: Terraform Plan
+        working-directory: infra
+        run: terraform plan -out=tfplan \
+          -var="registry_image=${{ env.IMAGE }}"
+        env:
+          TF_VAR_container_name: ${{ secrets.SCW_FRONTEND_CONTAINER_NAME }}
+          TF_VAR_namespace_name: ${{ secrets.SCW_NAMESPACE_NAME }}
+
+      - name: Terraform Apply
+        working-directory: infra
+        run: terraform apply -auto-approve tfplan
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          SCW_DEFAULT_REGION: fr-par

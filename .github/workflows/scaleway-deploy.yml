@@ -26,8 +26,8 @@ jobs:
 
       - name: Set image tag
         run: |
-          TAG=$(date +%Y%m%d-%H%M%S)
-          IMAGE="${{ env.SCW_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG"
+          TIMESTAMP=$(date +%d-%b-%Y__%H.%M.%S)
+          IMAGE="${{ env.SCW_REGISTRY }}/${{ env.IMAGE_NAME }}:$TIMESTAMP"
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 
       - name: Build and push Docker image

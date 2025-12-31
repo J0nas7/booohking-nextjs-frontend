@@ -7,7 +7,7 @@ on:
 
 env:
   SCW_REGISTRY: ${{ secrets.SCW_REGISTRY }}
-  IMAGE_NAME: ${{ secrets.FRONTEND_IMAGE_NAME }}
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
 
 jobs:
   deploy:

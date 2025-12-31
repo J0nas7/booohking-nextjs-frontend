@@ -1,6 +1,12 @@
-variable "container_name" { type = string }
-variable "registry_image" { type = string }
-variable "namespace_id" { type = string }
+variable "container_name" {
+  type = string
+}
+variable "registry_image" {
+  type = string
+}
+variable "namespace_id" {
+  type = string
+}
 
 variable "min_scale" {
   type    = number

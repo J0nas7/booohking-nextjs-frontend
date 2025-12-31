@@ -54,8 +54,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: infra
-        run: terraform plan -out=tfplan \
-          -var="registry_image=${{ env.IMAGE }}"
+        run: terraform plan -out=tfplan -var="registry_image=${{ env.IMAGE }}"
         env:
           TF_VAR_container_name: ${{ secrets.SCW_CONTAINER_NAME }}
           TF_VAR_namespace_name: ${{ secrets.SCW_NAMESPACE_NAME }}

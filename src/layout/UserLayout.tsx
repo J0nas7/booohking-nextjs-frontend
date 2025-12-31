@@ -34,7 +34,7 @@ export const UserLayout: React.FC<UserLayoutProps> = (props) => {
         ? [{ name: "Admin", href: "/admin", icon: faShield }, ...baseNavigation]
         : baseNavigation
 
-    // ---- Rendering ----
+    // ---- Render ----
     return (
         <Container className="layoutContainer">
             {/* Topmenu */}

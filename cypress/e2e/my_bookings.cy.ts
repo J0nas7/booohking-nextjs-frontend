@@ -81,23 +81,22 @@ describe("My Bookings Page", () => {
 
     it("shows correct status chips and cancel button behavior", () => {
         cy.wait("@getBookings", { timeout: 10000 }).then(({ response }) => {
-            cy.get(".myBookings-module-scss-module__DxLNEW__statusChip").each(($chip) => {
-                cy.wrap($chip)
-                    .find("span")
-                    .invoke("text")
-                    .then((text) => {
-                        expect(["BOOKED", "CANCELLED"]).to.include(text.trim());
-                    });
+            cy.get(".myBookings-module-scss-module__DxLNEW__statusChip").each(($chip, index) => {
+                // Re-query the chip by index to avoid detached DOM errors
+                cy.get(".myBookings-module-scss-module__DxLNEW__statusChip").eq(index).within(() => {
+                    cy.get("span")
+                        .invoke("text")
+                        .then((text) => {
+                            expect(["BOOKED", "CANCELLED"]).to.include(text.trim());
+                        });
 
-                // Cancel button only for BOOKED
-                cy.wrap($chip).then(($el) => {
-                    if ($el.text().includes("BOOKED")) {
-                        cy.wrap($el)
-                            .find("button")
-                            .should("contain.text", "Cancel booking");
-                    } else {
-                        cy.wrap($el).find("button").should("not.exist");
-                    }
+                    cy.get("span").invoke("text").then((statusText) => {
+                        if (statusText.includes("BOOKED")) {
+                            cy.get("button").should("contain.text", "Cancel booking");
+                        } else {
+                            cy.get("button").should("not.exist");
+                        }
+                    });
                 });
             });
         });

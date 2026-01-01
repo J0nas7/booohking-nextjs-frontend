@@ -1,7 +1,7 @@
 const prod = {
     app_name: "Booohking",
     url: {
-        APP_URL: "https://nsbooohkingnextjsfromk7apuyb-booohking-nextjs-frontend.functions.fnc.fr-par.scw.cloud",
+        APP_URL: "https://booohking.jonas-alexander.dk",
         API_URL: "https://nsbooohkinglaravelban2j1epl7-booohking-laravel-backend.functions.fnc.fr-par.scw.cloud",
         BACKEND_URL: "https://nsbooohkinglaravelban2j1epl7-booohking-laravel-backend.functions.fnc.fr-par.scw.cloud",
     },

@@ -1,3 +1,4 @@
+import { env } from '@/types';
 import { cookies } from 'next/headers';
 import { NextResponse } from "next/server";
 
@@ -28,9 +29,10 @@ export async function GET(req: Request) {
         .join("; ");
 
     try {
-
-        // Optional: whitelist allowed domains for safety
-        const allowedHosts = ["backend:8080"];
+        // Whitelist allowed domains for safety
+        const backendUrl = env.url.BACKEND_URL;
+        const backendHost = new URL(backendUrl).host; // Ensures http/https are stripped and only host:port remains
+        const allowedHosts = [backendHost];
         const parsedUrl = new URL(targetUrl);
         if (!allowedHosts.includes(parsedUrl.host)) {
             return NextResponse.json(

@@ -1,15 +1,15 @@
 // src/app/lib/serverGet.ts
-import { paths } from "@/types";
+import { env, paths } from "@/types";
 import { cookies } from 'next/headers';
 
 export async function serverGet(apiEndPoint: string) {
     // Build the "real" target URL
     const url = apiEndPoint.startsWith("http")
         ? apiEndPoint
-        : `http://backend:8080${paths.API_ROUTE}${apiEndPoint}`;
+        : `${env.url.BACKEND_URL}${paths.API_ROUTE}${apiEndPoint}`;
 
     // Encode the URL and call the Next.js proxy route
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || env.url.APP_URL;
     const proxyUrl = `${baseUrl}/api/get?url=${encodeURIComponent(url)}`;
 
     const cookieStore = await cookies();
